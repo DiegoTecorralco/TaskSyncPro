@@ -28,9 +28,9 @@
 
 **Nombre del Proyecto:** TaskSync Pro  
 **Patrocinador:** Innovación Digital S.A.  
-**Gerente del Proyecto:** Carlos Méndez  
-**Fecha de Inicio:** 1 de mayo de 2025  
-**Fecha Estimada de Cierre:** 30 de noviembre de 2025  
+**Gerente del Proyecto:** Diego Tecorralco  
+**Fecha de Inicio:** 4 de mayo de 2026  
+**Fecha Estimada de Cierre:** 17 de julio 2026
 
 **Justificación del Proyecto:**  
 En un entorno donde la productividad personal y profesional es clave, existe una creciente necesidad de herramientas que integren la gestión de tareas con dispositivos wearables. TaskSync Pro nace para cubrir ese vacío, ofreciendo una solución sincronizada que permita a los usuarios organizar su día a día de forma ágil y eficiente, sin depender exclusivamente del teléfono móvil.
@@ -396,7 +396,7 @@ Todos los contratos serán revisados por el área legal de la empresa.
 - Liberación de recursos.
 - Cierre financiero y administrativo.
 
-**Fecha Estimada de Cierre:** 30 de noviembre de 2025
+**Fecha Estimada de Cierre:** 17 de julio de 2026
 
 ---
 
