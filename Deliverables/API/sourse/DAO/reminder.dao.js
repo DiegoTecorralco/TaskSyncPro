@@ -3,7 +3,6 @@ import pool from "../config/database.js";
 /* ==========================================
    OBTENER TODOS LOS RECORDATORIOS
 ========================================== */
-
 export const getAllReminders = async () => {
     const [rows] = await pool.query(
         `SELECT 
@@ -16,14 +15,12 @@ export const getAllReminders = async () => {
             notificado
          FROM recordatorios`
     );
-
     return rows;
 };
 
 /* ==========================================
    OBTENER RECORDATORIO POR ID
 ========================================== */
-
 export const getReminderById = async (id) => {
     const [rows] = await pool.query(
         `SELECT 
@@ -38,14 +35,12 @@ export const getReminderById = async (id) => {
          WHERE recordatorio_id = ?`,
         [id]
     );
-
     return rows[0];
 };
 
 /* ==========================================
    OBTENER RECORDATORIOS POR USUARIO
 ========================================== */
-
 export const getRemindersByUser = async (userId) => {
     const [rows] = await pool.query(
         `SELECT 
@@ -61,14 +56,12 @@ export const getRemindersByUser = async (userId) => {
          ORDER BY fecha ASC`,
         [userId]
     );
-
     return rows;
 };
 
 /* ==========================================
    CREAR RECORDATORIO
 ========================================== */
-
 export const createReminder = async (reminder) => {
     const {
         usuario_id,
@@ -91,7 +84,6 @@ export const createReminder = async (reminder) => {
 /* ==========================================
    ACTUALIZAR RECORDATORIO
 ========================================== */
-
 export const updateReminder = async (id, reminder) => {
     const {
         categoria_id,
@@ -118,20 +110,17 @@ export const updateReminder = async (id, reminder) => {
 /* ==========================================
    ELIMINAR RECORDATORIO
 ========================================== */
-
 export const deleteReminder = async (id) => {
     const [result] = await pool.query(
         `DELETE FROM recordatorios WHERE recordatorio_id = ?`,
         [id]
     );
-
     return result.affectedRows;
 };
 
 /* ==========================================
    MARCAR COMO NOTIFICADO
 ========================================== */
-
 export const markAsNotified = async (id) => {
     const [result] = await pool.query(
         `UPDATE recordatorios 
@@ -139,6 +128,5 @@ export const markAsNotified = async (id) => {
          WHERE recordatorio_id = ?`,
         [id]
     );
-
     return result.affectedRows;
 };
