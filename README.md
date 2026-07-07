@@ -27,7 +27,6 @@
 ## 1. Inicio del Proyecto
 
 **Nombre del Proyecto:** TaskSync Pro  
-**Patrocinador:** Innovación Digital S.A.  
 **Gerente del Proyecto:** Diego Tecorralco  
 **Fecha de Inicio:** 4 de mayo de 2026  
 **Fecha Estimada de Cierre:** 17 de julio 2026
