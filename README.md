@@ -1,6 +1,6 @@
 # TaskSync Pro – Documentación Completa del Proyecto
 
----
+
 
 ## Tabla de Contenido
 
@@ -21,7 +21,7 @@
 15. [Plan de Pruebas](#15-plan-de-pruebas)
 16. [Información del Cierre del Proyecto](#16-información-del-cierre-del-proyecto)
 
----
+
 
 ## 1. Inicio del Proyecto
 
@@ -38,7 +38,7 @@ En un entorno donde la productividad personal y profesional es clave, existe una
 - Ofrecer una alternativa ligera y funcional frente a competidores más complejos.
 - Fidelizar usuarios mediante una experiencia de uso sencilla y efectiva.
 
----
+
 
 ## 2. Gestión de Alcance
 
@@ -63,7 +63,7 @@ En un entorno donde la productividad personal y profesional es clave, existe una
 - No se incluirá geolocalización.
 - No se implementarán videollamadas ni mensajería instantánea.
 
----
+
 
 ## 3. Tecnologías utilizadas
 
@@ -81,7 +81,7 @@ En un entorno donde la productividad personal y profesional es clave, existe una
 | CI/CD | GitHub Actions / Jenkins |
 | Pruebas | Jest, Detox, Selenium |
 
----
+
 
 ## 4. Descripción del Proyecto
 
@@ -151,7 +151,7 @@ El proyecto será desarrollado utilizando la metodología ágil Scrum, permitien
 
 TaskSync Pro busca ofrecer una solución sencilla, moderna y eficiente para la gestión de tareas y recordatorios mediante una experiencia sincronizada entre dispositivos móviles y wearables. La aplicación está enfocada en mejorar la productividad y facilitar la organización diaria de los usuarios mediante herramientas intuitivas y accesibles.
 
----
+
 
 ## 5. Documentación
 
@@ -168,7 +168,7 @@ Se generará la siguiente documentación durante el ciclo de vida del proyecto:
 
 Todos los documentos estarán disponibles en un repositorio compartido (Google Drive / SharePoint) y se actualizarán en cada sprint.
 
----
+
 
 ## 6. Estructura del Proyecto
 
@@ -222,7 +222,7 @@ DataBases
     ├───NFRs
     ├───UHs
     └───URs
----
+
 
 ## 7. Gestión de Recursos Humanos
 
@@ -239,7 +239,7 @@ DataBases
 
 **Total:** 10 personas
 
----
+
 
 ## 8. Gestión de Interesados
 
@@ -254,7 +254,6 @@ DataBases
 **Estrategia de comunicación:**
 Reuniones mensuales con patrocinadores, sesiones de feedback con usuarios beta cada sprint, y reportes semanales de avance.
 
----
 
 ## 9. Gestión del Tiempo
 
@@ -262,7 +261,6 @@ Reuniones mensuales con patrocinadores, sesiones de feedback con usuarios beta c
 
 
 
----
 
 ## 10. Gestión de Costos
 
@@ -278,7 +276,6 @@ Reuniones mensuales con patrocinadores, sesiones de feedback con usuarios beta c
 
 **Fuente de financiamiento:** Capital propio de Innovación Digital S.A.
 
----
 
 ## 11. Gestión de Adquisiciones
 
@@ -292,7 +289,6 @@ Reuniones mensuales con patrocinadores, sesiones de feedback con usuarios beta c
 
 Todos los contratos serán revisados por el área legal de la empresa.
 
----
 
 ## 12. Gestión de la Comunicación
 
@@ -307,7 +303,6 @@ Todos los contratos serán revisados por el área legal de la empresa.
 
 **Herramientas:** Slack, Jira, Confluence, Google Meet.
 
----
 
 ## 13. Gestión de la Calidad
 
@@ -327,7 +322,6 @@ Todos los contratos serán revisados por el área legal de la empresa.
 - Tiempo promedio de resolución de bugs < 2 días.
 - Satisfacción del usuario en pruebas beta > 4.5/5.
 
----
 
 ## 14. Gestión de Riesgos
 
@@ -340,7 +334,6 @@ Todos los contratos serán revisados por el área legal de la empresa.
 | Cambios en requisitos | Media | Medio | Backlog flexible, sesiones de refinamiento continuo |
 | Rotación de personal | Baja | Alto | Documentación clara, conocimiento compartido |
 
----
 
 ## 15. Plan de Pruebas
 
@@ -368,7 +361,6 @@ Todos los contratos serán revisados por el área legal de la empresa.
 - Tiempo de respuesta < 2 segundos en condiciones normales.
 - Sin vulnerabilidades críticas de seguridad.
 
----
 
 ## 16. Información del Cierre del Proyecto
 
@@ -387,8 +379,8 @@ Todos los contratos serán revisados por el área legal de la empresa.
 
 **Fecha Estimada de Cierre:** 17 de julio de 2026
 
----
 
 ## Conclusión General
 
 TaskSync Pro es un proyecto ambicioso pero perfectamente acotado, que combina la gestión de tareas con la comodidad de los wearables. Con una metodología ágil, un equipo multidisciplinario y una planificación detallada, se espera entregar un producto de alta calidad que cumpla con las expectativas de los usuarios y los objetivos de negocio. La documentación aquí presentada sienta las bases para un desarrollo ordenado, transparente y exitoso.
+
