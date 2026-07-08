@@ -1,26 +1,25 @@
-
 # TaskSync Pro – Documentación Completa del Proyecto
 
 ---
 
 ## Tabla de Contenido
 
-1. Inicio del Proyecto
-2. Gestión de Alcance
-3. Tecnologías utilizadas
-4. Descripción del Proyecto
-5. Documentación
-6. Estructura del Proyecto
-7. Gestión de Recursos Humanos
-8. Gestión de Interesados
-9. Gestión del Tiempo
-10. Gestión de Costos
-11. Gestión de Adquisiciones
-12. Gestión de la Comunicación
-13. Gestión de la Calidad
-14. Gestión de Riesgos
-15. Plan de Pruebas
-16. Información del Cierre del Proyecto
+1. [Inicio del Proyecto](#1-inicio-del-proyecto)
+2. [Gestión de Alcance](#2-gestión-de-alcance)
+3. [Tecnologías utilizadas](#3-tecnologías-utilizadas)
+4. [Descripción del Proyecto](#4-descripción-del-proyecto)
+5. [Documentación](#5-documentación)
+6. [Estructura del Proyecto](#6-estructura-del-proyecto)
+7. [Gestión de Recursos Humanos](#7-gestión-de-recursos-humanos)
+8. [Gestión de Interesados](#8-gestión-de-interesados)
+9. [Gestión del Tiempo](#9-gestión-del-tiempo)
+10. [Gestión de Costos](#10-gestión-de-costos)
+11. [Gestión de Adquisiciones](#11-gestión-de-adquisiciones)
+12. [Gestión de la Comunicación](#12-gestión-de-la-comunicación)
+13. [Gestión de la Calidad](#13-gestión-de-la-calidad)
+14. [Gestión de Riesgos](#14-gestión-de-riesgos)
+15. [Plan de Pruebas](#15-plan-de-pruebas)
+16. [Información del Cierre del Proyecto](#16-información-del-cierre-del-proyecto)
 
 ---
 
@@ -173,48 +172,56 @@ Todos los documentos estarán disponibles en un repositorio compartido (Google D
 
 ## 6. Estructura del Proyecto
 
-```
-
-TaskSyncPro/
-├── backend/
-│   ├── src/
-│   │   ├── controllers/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   ├── services/
-│   │   └── utils/
-│   ├── tests/
-│   └── package.json
-├── mobile-app/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── screens/
-│   │   ├── navigation/
-│   │   ├── store/
-│   │   └── utils/
-│   ├── android/
-│   ├── ios/
-│   └── package.json
-├── wearable-app/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── screens/
-│   │   └── utils/
-│   ├── wear-os/
-│   ├── watch-os/
-│   └── package.json
-├── docs/
-│   ├── manual-usuario.pdf
-│   ├── manual-tecnico.pdf
-│   └── arquitectura.md
-├── tests/
-│   ├── unitarios/
-│   ├── integracion/
-│   └── e2e/
-└── README.md
-
-```
-
+DataBases
+│   ├───NoSQL
+│   │   ├───Backups
+│   │   ├───DD
+│   │   └───Schemas
+│   └───SQL
+│       ├───Backups
+│       ├───DD
+│       ├───ERD
+│       └───RM
+├───DataModels
+│   ├───Supervised_LMs
+│   └───Unsupervised_LMs
+├───Deliverables
+│   ├───API
+│   │   ├───build
+│   │   ├───Deployment
+│   │   └───sourse
+│   │       ├───config
+│   │       ├───controllers
+│   │       ├───cron
+│   │       ├───DAO
+│   │       ├───middleware
+│   │       ├───models
+│   │       ├───routes
+│   │       ├───services
+│   │       └───utils
+│   ├───WebApp
+│   │   ├───build
+│   │   ├───Deployment
+│   │   ├───sourse
+│   │   │   ├───backend
+│   │   │   └───frontend
+│   │   └───UserManual
+│   └───WerableApp
+│       ├───build
+│       ├───Deployment
+│       ├───sourse
+│       │   ├───backend
+│       │   └───frontend
+│       └───UserManual
+└───DOCs
+    ├───BRs
+    ├───Frs
+    ├───GUIs
+    │   ├───WebApp
+    │   └───WerableApp
+    ├───NFRs
+    ├───UHs
+    └───URs
 ---
 
 ## 7. Gestión de Recursos Humanos
@@ -251,26 +258,9 @@ Reuniones mensuales con patrocinadores, sesiones de feedback con usuarios beta c
 
 ## 9. Gestión del Tiempo
 
-**Cronograma de Alto Nivel (Sprints de 2 semanas):**
+**Cronograma de Alto Nivel:**
 
-| Sprint | Duración | Objetivo |
-|--------|----------|----------|
-| Sprint 0 | 2 semanas | Configuración del entorno, definición de arquitectura |
-| Sprint 1 | 2 semanas | Login, registro y perfil de usuario |
-| Sprint 2 | 2 semanas | CRUD de tareas y categorías |
-| Sprint 3 | 2 semanas | Recordatorios y notificaciones locales |
-| Sprint 4 | 2 semanas | Sincronización móvil-wearable (WebSockets) |
-| Sprint 5 | 2 semanas | Vista de calendario |
-| Sprint 6 | 2 semanas | App wearable (visualización y marcado de tareas) |
-| Sprint 7 | 2 semanas | Pruebas de integración y rendimiento |
-| Sprint 8 | 2 semanas | Corrección de errores, pulido de UI/UX |
-| Sprint 9 | 2 semanas | Pruebas beta, ajustes finales |
-| Sprint 10 | 2 semanas | Lanzamiento y documentación final |
 
-**Hitos clave:**
-- Prototipo funcional: Fin del Sprint 3
-- Beta cerrada: Fin del Sprint 8
-- Lanzamiento oficial: Fin del Sprint 10
 
 ---
 
