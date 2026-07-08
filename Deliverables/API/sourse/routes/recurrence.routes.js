@@ -1,5 +1,4 @@
 import { Router } from "express";
-
 import {
     getRecurrences,
     getRecurrence,
@@ -10,10 +9,6 @@ import {
 } from "../controllers/recurrence.controller.js";
 
 const router = Router();
-
-/* ==========================================
-   RUTAS DE RECURRENCIAS
-========================================== */
 
 // Obtener todas las recurrencias
 router.get("/", getRecurrences);
@@ -33,4 +28,4 @@ router.put("/:id", updateRecurrenceById);
 // Eliminar recurrencia
 router.delete("/:id", deleteRecurrenceById);
 
-export default router;  
+export default router;

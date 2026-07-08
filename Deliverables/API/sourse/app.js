@@ -12,6 +12,7 @@ import userRoutes from "./routes/user.routes.js";
 import taskRoutes from "./routes/task.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import reminderRoutes from "./routes/reminder.routes.js";
+import recurrenceRoutes from "./routes/recurrence.routes.js"; // ✅ Cambiado
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/reminders", reminderRoutes);
+app.use("/api/recurrences", recurrenceRoutes); // ✅ Cambiado
 
 /* ============================
      RUTA NO ENCONTRADA
@@ -76,7 +78,7 @@ const PORT = process.env.PORT || 3000;
 // Verificar conexión a la BD y luego iniciar
 (async () => {
     console.log('═══════════════════════════════════════');
-    console.log('   🚀 TASKSYNC PRO API');
+    console.log('   TASKSYNC PRO API');
     console.log('═══════════════════════════════════════');
     
     try {

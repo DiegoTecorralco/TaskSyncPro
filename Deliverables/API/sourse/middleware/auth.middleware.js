@@ -1,23 +1,25 @@
 import { verifyToken } from "../utils/jwt.js";
-import { errorResponse } from "../utils/response.js";
-
-
 
 export const authMiddleware = (req, res, next) => {
     try {
-
         // Obtener token del header
         const authHeader = req.headers.authorization;
 
         if (!authHeader) {
-            return errorResponse(res, "No hay token de autenticación", 401);
+            return res.status(401).json({
+                success: false,
+                message: "No hay token de autenticación"
+            });
         }
 
         // Formato: Bearer TOKEN
         const token = authHeader.split(" ")[1];
 
         if (!token) {
-            return errorResponse(res, "Token no válido", 401);
+            return res.status(401).json({
+                success: false,
+                message: "Token no válido"
+            });
         }
 
         // Verificar token
@@ -29,6 +31,10 @@ export const authMiddleware = (req, res, next) => {
         next();
 
     } catch (error) {
-        return errorResponse(res, "Token inválido o expirado", 401, error.message);
+        return res.status(401).json({
+            success: false,
+            message: "Token inválido o expirado",
+            error: error.message
+        });
     }
 };

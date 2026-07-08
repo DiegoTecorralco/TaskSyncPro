@@ -3,9 +3,7 @@ import pool from "../config/database.js";
 /* ==========================================
    SINCRONIZACIÓN MULTI-DISPOSITIVO
 ========================================== */
-
 export const syncUserData = async (userId) => {
-
     const [tasks] = await pool.query(
         `SELECT * FROM recordatorios WHERE usuario_id = ?`,
         [userId]

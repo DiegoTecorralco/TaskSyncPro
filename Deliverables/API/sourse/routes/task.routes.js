@@ -1,18 +1,12 @@
 import { Router } from "express";
-
 import {
     getTaskDashboard,
     getPending,
     getCompleted
 } from "../controllers/task.controller.js";
-
 import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const router = Router();
-
-/* ==========================================
-   TASK ROUTES
-========================================== */
 
 // Dashboard
 router.get("/dashboard/:userId", authMiddleware, getTaskDashboard);

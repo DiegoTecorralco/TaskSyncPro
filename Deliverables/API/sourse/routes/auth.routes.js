@@ -3,7 +3,6 @@ import { register, login } from "../controllers/auth.controller.js";
 
 const router = Router();
 
-
 // Registro de usuario
 router.post("/register", register);
 

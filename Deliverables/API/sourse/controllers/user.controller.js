@@ -17,10 +17,18 @@ export const getAllUsers = async (req, res) => {
              FROM usuarios`
         );
 
-        res.json(rows);
+        return res.status(200).json({
+            success: true,
+            message: "Usuarios obtenidos correctamente",
+            data: rows
+        });
     } catch (error) {
         console.error('Error al obtener usuarios:', error);
-        res.status(500).json({ message: 'Error al obtener usuarios' });
+        return res.status(500).json({
+            success: false,
+            message: "Error al obtener usuarios",
+            error: error.message
+        });
     }
 };
 
@@ -46,13 +54,24 @@ export const getUserById = async (req, res) => {
         );
 
         if (rows.length === 0) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
+            return res.status(404).json({
+                success: false,
+                message: "Usuario no encontrado"
+            });
         }
 
-        res.json(rows[0]);
+        return res.status(200).json({
+            success: true,
+            message: "Usuario encontrado",
+            data: rows[0]
+        });
     } catch (error) {
         console.error('Error al obtener usuario:', error);
-        res.status(500).json({ message: 'Error al obtener usuario' });
+        return res.status(500).json({
+            success: false,
+            message: "Error al obtener usuario",
+            error: error.message
+        });
     }
 };
 
@@ -64,7 +83,6 @@ export const getUserByEmail = async (correo) => {
         `SELECT * FROM usuarios WHERE correo = ?`,
         [correo]
     );
-
     return rows[0];
 };
 
@@ -83,15 +101,19 @@ export const createUser = async (req, res) => {
 
         // Validar datos requeridos
         if (!nombre || !correo || !password) {
-            return res.status(400).json({ 
-                message: 'Nombre, correo y contraseña son requeridos' 
+            return res.status(400).json({
+                success: false,
+                message: "Nombre, correo y contraseña son requeridos"
             });
         }
 
         // Verificar si el correo ya existe
         const existingUser = await getUserByEmail(correo);
         if (existingUser) {
-            return res.status(409).json({ message: 'El correo ya está registrado' });
+            return res.status(409).json({
+                success: false,
+                message: "El correo ya está registrado"
+            });
         }
 
         const [result] = await pool.query(
@@ -101,13 +123,20 @@ export const createUser = async (req, res) => {
             [nombre, apellido_paterno || null, apellido_materno || null, correo, password]
         );
 
-        res.status(201).json({ 
-            message: 'Usuario creado exitosamente',
-            usuario_id: result.insertId 
+        return res.status(201).json({
+            success: true,
+            message: "Usuario creado exitosamente",
+            data: {
+                usuario_id: result.insertId
+            }
         });
     } catch (error) {
         console.error('Error al crear usuario:', error);
-        res.status(500).json({ message: 'Error al crear usuario' });
+        return res.status(500).json({
+            success: false,
+            message: "Error al crear usuario",
+            error: error.message
+        });
     }
 };
 
@@ -125,9 +154,29 @@ export const updateUserById = async (req, res) => {
         } = req.body;
 
         // Verificar si el usuario existe
-        const userExists = await getUserByEmail(correo);
-        if (!userExists) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
+        const [userRows] = await pool.query(
+            `SELECT usuario_id FROM usuarios WHERE usuario_id = ?`,
+            [id]
+        );
+        if (userRows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Usuario no encontrado"
+            });
+        }
+
+        // Si se envía correo, verificar que no esté en uso por otro usuario
+        if (correo) {
+            const [existing] = await pool.query(
+                `SELECT usuario_id FROM usuarios WHERE correo = ? AND usuario_id != ?`,
+                [correo, id]
+            );
+            if (existing.length > 0) {
+                return res.status(409).json({
+                    success: false,
+                    message: "El correo ya está en uso por otro usuario"
+                });
+            }
         }
 
         const [result] = await pool.query(
@@ -141,13 +190,23 @@ export const updateUserById = async (req, res) => {
         );
 
         if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
+            return res.status(500).json({
+                success: false,
+                message: "No se pudo actualizar el usuario"
+            });
         }
 
-        res.json({ message: 'Usuario actualizado exitosamente' });
+        return res.status(200).json({
+            success: true,
+            message: "Usuario actualizado exitosamente"
+        });
     } catch (error) {
         console.error('Error al actualizar usuario:', error);
-        res.status(500).json({ message: 'Error al actualizar usuario' });
+        return res.status(500).json({
+            success: false,
+            message: "Error al actualizar usuario",
+            error: error.message
+        });
     }
 };
 
@@ -158,18 +217,40 @@ export const deleteUserById = async (req, res) => {
     try {
         const { id } = req.params;
 
+        // Verificar existencia
+        const [userRows] = await pool.query(
+            `SELECT usuario_id FROM usuarios WHERE usuario_id = ?`,
+            [id]
+        );
+        if (userRows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Usuario no encontrado"
+            });
+        }
+
         const [result] = await pool.query(
             `DELETE FROM usuarios WHERE usuario_id = ?`,
             [id]
         );
 
         if (result.affectedRows === 0) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
+            return res.status(500).json({
+                success: false,
+                message: "No se pudo eliminar el usuario"
+            });
         }
 
-        res.json({ message: 'Usuario eliminado exitosamente' });
+        return res.status(200).json({
+            success: true,
+            message: "Usuario eliminado exitosamente"
+        });
     } catch (error) {
         console.error('Error al eliminar usuario:', error);
-        res.status(500).json({ message: 'Error al eliminar usuario' });
+        return res.status(500).json({
+            success: false,
+            message: "Error al eliminar usuario",
+            error: error.message
+        });
     }
 };

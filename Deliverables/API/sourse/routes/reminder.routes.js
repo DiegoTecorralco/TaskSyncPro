@@ -9,10 +9,8 @@ import {
     markReminderAsNotified
 } from "../controllers/reminder.controller.js";
 
-// ✅ Crear el router
 const router = Router();
 
-// ✅ Definir las rutas
 // Obtener todos los recordatorios
 router.get("/", getReminders);
 
@@ -34,5 +32,4 @@ router.delete("/:id", deleteReminderById);
 // Marcar como notificado
 router.patch("/:id/notify", markReminderAsNotified);
 
-// ✅ Exportar el router
 export default router;

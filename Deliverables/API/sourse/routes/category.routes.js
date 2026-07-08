@@ -1,5 +1,4 @@
 import { Router } from "express";
-
 import {
     getCategories,
     getCategory,
@@ -9,10 +8,6 @@ import {
 } from "../controllers/category.controller.js";
 
 const router = Router();
-
-/* ==========================================
-   RUTAS DE CATEGORÍAS
-========================================== */
 
 // Obtener todas las categorías
 router.get("/", getCategories);

@@ -16,7 +16,7 @@ export const getAllRecurrences = async () => {
 };
 
 /* ==========================================
-   OBTENER POR ID
+   OBTENER RECURRENCIA POR ID
 ========================================== */
 export const getRecurrenceById = async (id) => {
     const [rows] = await pool.query(
@@ -33,7 +33,7 @@ export const getRecurrenceById = async (id) => {
 };
 
 /* ==========================================
-   OBTENER POR RECORDATORIO
+   OBTENER RECURRENCIAS POR RECORDATORIO
 ========================================== */
 export const getRecurrenceByReminder = async (reminderId) => {
     const [rows] = await pool.query(

@@ -4,9 +4,7 @@ import { markAsNotified } from "../DAO/reminder.dao.js";
 /* ==========================================
    PROCESAR RECORDATORIOS
 ========================================== */
-
 export const processReminders = async () => {
-
     const now = new Date();
 
     const [rows] = await pool.query(
@@ -17,9 +15,7 @@ export const processReminders = async () => {
     );
 
     for (const r of rows) {
-
         console.log("🔔 Reminder:", r.titulo);
-
         await markAsNotified(r.recordatorio_id);
     }
 

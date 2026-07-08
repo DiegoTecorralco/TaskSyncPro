@@ -8,18 +8,24 @@ import {
     markAsNotified
 } from "../DAO/reminder.dao.js";
 
-import { successResponse, errorResponse } from "../utils/response.js";
-
 /* ==========================================
    OBTENER TODOS LOS RECORDATORIOS
 ========================================== */
 export const getReminders = async (req, res) => {
     try {
         const reminders = await getAllReminders();
-        return successResponse(res, "Recordatorios obtenidos correctamente", reminders);
+        return res.status(200).json({
+            success: true,
+            message: "Recordatorios obtenidos correctamente",
+            data: reminders
+        });
     } catch (error) {
         console.error('Error en getReminders:', error);
-        return errorResponse(res, "Error al obtener recordatorios", 500, error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Error al obtener recordatorios",
+            error: error.message
+        });
     }
 };
 
@@ -31,19 +37,33 @@ export const getReminder = async (req, res) => {
         const { id } = req.params;
         
         if (isNaN(id)) {
-            return errorResponse(res, "ID inválido", 400);
+            return res.status(400).json({
+                success: false,
+                message: "ID inválido"
+            });
         }
 
         const reminder = await getReminderById(parseInt(id));
 
         if (!reminder) {
-            return errorResponse(res, "Recordatorio no encontrado", 404);
+            return res.status(404).json({
+                success: false,
+                message: "Recordatorio no encontrado"
+            });
         }
 
-        return successResponse(res, "Recordatorio encontrado", reminder);
+        return res.status(200).json({
+            success: true,
+            message: "Recordatorio encontrado",
+            data: reminder
+        });
     } catch (error) {
         console.error('Error en getReminder:', error);
-        return errorResponse(res, "Error al obtener recordatorio", 500, error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Error al obtener recordatorio",
+            error: error.message
+        });
     }
 };
 
@@ -55,20 +75,31 @@ export const getRemindersUser = async (req, res) => {
         const { userId } = req.params;
         
         if (isNaN(userId)) {
-            return errorResponse(res, "ID de usuario inválido", 400);
+            return res.status(400).json({
+                success: false,
+                message: "ID de usuario inválido"
+            });
         }
 
         const reminders = await getRemindersByUser(parseInt(userId));
 
-        return successResponse(res, "Recordatorios del usuario obtenidos", reminders);
+        return res.status(200).json({
+            success: true,
+            message: "Recordatorios del usuario obtenidos",
+            data: reminders
+        });
     } catch (error) {
         console.error('Error en getRemindersUser:', error);
-        return errorResponse(res, "Error al obtener recordatorios del usuario", 500, error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Error al obtener recordatorios del usuario",
+            error: error.message
+        });
     }
 };
 
 /* ==========================================
-   CREAR RECORDATORIO - ✅ Exportación correcta
+   CREAR RECORDATORIO
 ========================================== */
 export const createNewReminder = async (req, res) => {
     try {
@@ -81,15 +112,24 @@ export const createNewReminder = async (req, res) => {
         } = req.body;
 
         if (!titulo || !fecha || !usuario_id) {
-            return errorResponse(res, "Título, fecha y usuario son requeridos", 400);
+            return res.status(400).json({
+                success: false,
+                message: "Título, fecha y usuario son requeridos"
+            });
         }
 
         if (isNaN(usuario_id)) {
-            return errorResponse(res, "ID de usuario inválido", 400);
+            return res.status(400).json({
+                success: false,
+                message: "ID de usuario inválido"
+            });
         }
 
         if (isNaN(Date.parse(fecha))) {
-            return errorResponse(res, "Fecha inválida", 400);
+            return res.status(400).json({
+                success: false,
+                message: "Fecha inválida"
+            });
         }
 
         const reminderId = await createReminder({
@@ -100,13 +140,21 @@ export const createNewReminder = async (req, res) => {
             fecha: fecha
         });
 
-        return successResponse(res, "Recordatorio creado correctamente", {
-            recordatorio_id: reminderId
+        return res.status(201).json({
+            success: true,
+            message: "Recordatorio creado correctamente",
+            data: {
+                recordatorio_id: reminderId
+            }
         });
 
     } catch (error) {
         console.error('Error en createNewReminder:', error);
-        return errorResponse(res, "Error al crear recordatorio", 500, error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Error al crear recordatorio",
+            error: error.message
+        });
     }
 };
 
@@ -119,12 +167,18 @@ export const updateReminderById = async (req, res) => {
         const data = req.body;
 
         if (isNaN(id)) {
-            return errorResponse(res, "ID inválido", 400);
+            return res.status(400).json({
+                success: false,
+                message: "ID inválido"
+            });
         }
 
         const existingReminder = await getReminderById(parseInt(id));
         if (!existingReminder) {
-            return errorResponse(res, "Recordatorio no encontrado", 404);
+            return res.status(404).json({
+                success: false,
+                message: "Recordatorio no encontrado"
+            });
         }
 
         const updateData = {
@@ -138,14 +192,24 @@ export const updateReminderById = async (req, res) => {
         const updated = await updateReminder(parseInt(id), updateData);
 
         if (!updated) {
-            return errorResponse(res, "No se pudo actualizar el recordatorio", 500);
+            return res.status(500).json({
+                success: false,
+                message: "No se pudo actualizar el recordatorio"
+            });
         }
 
-        return successResponse(res, "Recordatorio actualizado correctamente");
+        return res.status(200).json({
+            success: true,
+            message: "Recordatorio actualizado correctamente"
+        });
 
     } catch (error) {
         console.error('Error en updateReminderById:', error);
-        return errorResponse(res, "Error al actualizar recordatorio", 500, error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Error al actualizar recordatorio",
+            error: error.message
+        });
     }
 };
 
@@ -157,25 +221,41 @@ export const deleteReminderById = async (req, res) => {
         const { id } = req.params;
 
         if (isNaN(id)) {
-            return errorResponse(res, "ID inválido", 400);
+            return res.status(400).json({
+                success: false,
+                message: "ID inválido"
+            });
         }
 
         const existingReminder = await getReminderById(parseInt(id));
         if (!existingReminder) {
-            return errorResponse(res, "Recordatorio no encontrado", 404);
+            return res.status(404).json({
+                success: false,
+                message: "Recordatorio no encontrado"
+            });
         }
 
         const deleted = await deleteReminder(parseInt(id));
 
         if (!deleted) {
-            return errorResponse(res, "No se pudo eliminar el recordatorio", 500);
+            return res.status(500).json({
+                success: false,
+                message: "No se pudo eliminar el recordatorio"
+            });
         }
 
-        return successResponse(res, "Recordatorio eliminado correctamente");
+        return res.status(200).json({
+            success: true,
+            message: "Recordatorio eliminado correctamente"
+        });
 
     } catch (error) {
         console.error('Error en deleteReminderById:', error);
-        return errorResponse(res, "Error al eliminar recordatorio", 500, error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Error al eliminar recordatorio",
+            error: error.message
+        });
     }
 };
 
@@ -187,28 +267,47 @@ export const markReminderAsNotified = async (req, res) => {
         const { id } = req.params;
 
         if (isNaN(id)) {
-            return errorResponse(res, "ID inválido", 400);
+            return res.status(400).json({
+                success: false,
+                message: "ID inválido"
+            });
         }
 
         const existingReminder = await getReminderById(parseInt(id));
         if (!existingReminder) {
-            return errorResponse(res, "Recordatorio no encontrado", 404);
+            return res.status(404).json({
+                success: false,
+                message: "Recordatorio no encontrado"
+            });
         }
 
         if (existingReminder.notificado === 1) {
-            return errorResponse(res, "El recordatorio ya está marcado como notificado", 400);
+            return res.status(400).json({
+                success: false,
+                message: "El recordatorio ya está marcado como notificado"
+            });
         }
 
         const result = await markAsNotified(parseInt(id));
 
         if (!result) {
-            return errorResponse(res, "No se pudo marcar como notificado", 500);
+            return res.status(500).json({
+                success: false,
+                message: "No se pudo marcar como notificado"
+            });
         }
 
-        return successResponse(res, "Recordatorio marcado como notificado");
+        return res.status(200).json({
+            success: true,
+            message: "Recordatorio marcado como notificado"
+        });
 
     } catch (error) {
         console.error('Error en markReminderAsNotified:', error);
-        return errorResponse(res, "Error al actualizar estado", 500, error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Error al actualizar estado",
+            error: error.message
+        });
     }
 };

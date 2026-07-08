@@ -1,8 +1,6 @@
 import pool from "../config/database.js";
-import { successResponse, errorResponse } from "../utils/response.js";
 import { hashPassword, comparePassword } from "../utils/password.js";
 import { generateToken } from "../utils/jwt.js";
-
 
 export const register = async (req, res) => {
     try {
@@ -21,7 +19,10 @@ export const register = async (req, res) => {
         );
 
         if (existingUser.length > 0) {
-            return errorResponse(res, "El correo ya está registrado", 400);
+            return res.status(400).json({
+                success: false,
+                message: "El correo ya está registrado"
+            });
         }
 
         // Encriptar contraseña
@@ -35,15 +36,20 @@ export const register = async (req, res) => {
             [nombre, apellido_paterno, apellido_materno, correo, hashedPassword]
         );
 
-        return successResponse(res, "Usuario registrado correctamente");
+        return res.status(201).json({
+            success: true,
+            message: "Usuario registrado correctamente"
+        });
 
     } catch (error) {
         console.error(error);
-        return errorResponse(res, "Error al registrar usuario", 500, error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Error al registrar usuario",
+            error: error.message
+        });
     }
 };
-
-
 
 export const login = async (req, res) => {
     try {
@@ -56,7 +62,10 @@ export const login = async (req, res) => {
         );
 
         if (rows.length === 0) {
-            return errorResponse(res, "Usuario no encontrado", 404);
+            return res.status(404).json({
+                success: false,
+                message: "Usuario no encontrado"
+            });
         }
 
         const user = rows[0];
@@ -65,7 +74,10 @@ export const login = async (req, res) => {
         const isPasswordValid = await comparePassword(password, user.password);
 
         if (!isPasswordValid) {
-            return errorResponse(res, "Contraseña incorrecta", 401);
+            return res.status(401).json({
+                success: false,
+                message: "Contraseña incorrecta"
+            });
         }
 
         // Generar token
@@ -74,19 +86,27 @@ export const login = async (req, res) => {
             correo: user.correo
         });
 
-        return successResponse(res, "Login exitoso", {
-            token,
-            user: {
-                usuario_id: user.usuario_id,
-                nombre: user.nombre,
-                apellido_paterno: user.apellido_paterno,
-                apellido_materno: user.apellido_materno,
-                correo: user.correo
+        return res.status(200).json({
+            success: true,
+            message: "Login exitoso",
+            data: {
+                token,
+                user: {
+                    usuario_id: user.usuario_id,
+                    nombre: user.nombre,
+                    apellido_paterno: user.apellido_paterno,
+                    apellido_materno: user.apellido_materno,
+                    correo: user.correo
+                }
             }
         });
 
     } catch (error) {
         console.error(error);
-        return errorResponse(res, "Error en login", 500, error.message);
+        return res.status(500).json({
+            success: false,
+            message: "Error en login",
+            error: error.message
+        });
     }
 };
