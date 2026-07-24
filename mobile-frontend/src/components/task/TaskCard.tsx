@@ -1,10 +1,11 @@
 import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
   Alert,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -15,12 +16,8 @@ import { taskService } from "../../services/task.service";
 
 interface Props {
   task: Task;
-  reload: () => void;
+  reload: () => void | Promise<void>;
 }
-
-/* ===========================
-   Formatear fecha
-=========================== */
 
 function formatDueDate(date: string) {
   if (!date) {
@@ -30,11 +27,20 @@ function formatDueDate(date: string) {
     };
   }
 
-  const dueDate = new Date(date);
+  const [year, month, day] = date.split("-").map(Number);
+
+  const dueDate = new Date(year, month - 1, day);
   const today = new Date();
 
   today.setHours(0, 0, 0, 0);
   dueDate.setHours(0, 0, 0, 0);
+
+  if (Number.isNaN(dueDate.getTime())) {
+    return {
+      text: "Fecha inválida",
+      expired: false,
+    };
+  }
 
   if (dueDate < today) {
     return {
@@ -55,19 +61,24 @@ function formatDueDate(date: string) {
   };
 }
 
-export default function TaskCard({
-  task,
-  reload,
-}: Props) {
-
+export default function TaskCard({ task, reload }: Props) {
   const dueDate = formatDueDate(task.dueDate);
 
   async function toggleTask() {
-    await taskService.updateTask(task.id, {
-      completed: !task.completed,
-    });
+    try {
+      await taskService.updateTask(task.id, {
+        completed: !task.completed,
+      });
 
-    reload();
+      await reload();
+    } catch (error) {
+      console.error("Error al actualizar la tarea:", error);
+
+      Alert.alert(
+        "Error",
+        "No se pudo actualizar la tarea."
+      );
+    }
   }
 
   function editTask() {
@@ -79,7 +90,37 @@ export default function TaskCard({
     });
   }
 
+  async function confirmDelete() {
+    try {
+      await taskService.deleteTask(task.id);
+      await reload();
+    } catch (error) {
+      console.error("Error al eliminar la tarea:", error);
+
+      if (Platform.OS === "web") {
+        window.alert("No se pudo eliminar la tarea.");
+      } else {
+        Alert.alert(
+          "Error",
+          "No se pudo eliminar la tarea."
+        );
+      }
+    }
+  }
+
   function deleteTask() {
+    if (Platform.OS === "web") {
+      const confirmed = window.confirm(
+        "¿Estás seguro de eliminar esta tarea?"
+      );
+
+      if (confirmed) {
+        void confirmDelete();
+      }
+
+      return;
+    }
+
     Alert.alert(
       "Eliminar tarea",
       "¿Estás seguro de eliminar esta tarea?",
@@ -91,9 +132,8 @@ export default function TaskCard({
         {
           text: "Eliminar",
           style: "destructive",
-          onPress: async () => {
-            await taskService.deleteTask(task.id);
-            reload();
+          onPress: () => {
+            void confirmDelete();
           },
         },
       ]
@@ -102,9 +142,6 @@ export default function TaskCard({
 
   return (
     <View style={styles.card}>
-
-      {/* Botón completar */}
-
       <TouchableOpacity
         style={styles.check}
         onPress={toggleTask}
@@ -124,35 +161,31 @@ export default function TaskCard({
         />
       </TouchableOpacity>
 
-      {/* Información */}
-
       <View style={styles.content}>
-
         <Text
           style={[
             styles.title,
-            task.completed &&
-              styles.completed,
+            task.completed && styles.completed,
           ]}
         >
           {task.title}
         </Text>
 
-        <Text style={styles.description}>
-          {task.description}
-        </Text>
+        {task.description ? (
+          <Text style={styles.description}>
+            {task.description}
+          </Text>
+        ) : null}
 
         <View style={styles.infoRow}>
-
           <View
             style={[
               styles.priorityBadge,
-
               task.priority === "Alta"
                 ? styles.priorityHigh
                 : task.priority === "Media"
-                ? styles.priorityMedium
-                : styles.priorityLow,
+                  ? styles.priorityMedium
+                  : styles.priorityLow,
             ]}
           >
             <Text style={styles.priorityText}>
@@ -163,21 +196,15 @@ export default function TaskCard({
           <Text
             style={[
               styles.date,
-              dueDate.expired &&
-                styles.expiredDate,
+              dueDate.expired && styles.expiredDate,
             ]}
           >
             {dueDate.text}
           </Text>
-
         </View>
-
       </View>
 
-      {/* Acciones */}
-
       <View style={styles.actions}>
-
         <TouchableOpacity
           style={styles.iconButton}
           onPress={editTask}
@@ -199,15 +226,12 @@ export default function TaskCard({
             color="#EF4444"
           />
         </TouchableOpacity>
-
       </View>
-
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-
   card: {
     flexDirection: "row",
     alignItems: "center",
@@ -250,8 +274,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
 
-  /* Badge prioridad */
-
   priorityBadge: {
     paddingHorizontal: 12,
     paddingVertical: 5,
@@ -276,8 +298,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#22C55E",
   },
 
-  /* Fecha */
-
   date: {
     color: "#666",
     fontSize: 13,
@@ -289,8 +309,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  /* Acciones */
-
   actions: {
     justifyContent: "space-between",
     marginLeft: 15,
@@ -299,5 +317,4 @@ const styles = StyleSheet.create({
   iconButton: {
     paddingVertical: 8,
   },
-
 });

@@ -9,6 +9,17 @@ export interface Category {
 }
 
 // ============================
+// Recordatorios
+// ============================
+
+export type ReminderOption =
+  | 0
+  | 10
+  | 30
+  | 60
+  | 1440;
+
+// ============================
 // Tareas
 // ============================
 
@@ -25,9 +36,19 @@ export interface Task {
 
   createdAt: string;
 
+  // Formato: YYYY-MM-DD
   dueDate: string;
 
+  // Formato: HH:mm
+  dueTime?: string;
+
   priority: "Alta" | "Media" | "Baja";
+
+  reminderEnabled?: boolean;
+
+  reminderMinutesBefore?: ReminderOption;
+
+  notificationId?: string;
 }
 
 // ============================
