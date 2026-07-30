@@ -1,13 +1,50 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { Task } from "../types";
-import { notificationService } from "./notification.service";
+import { Task, User } from "../types";
 
-const STORAGE_KEY = "@tasks";
+const SESSION_KEY = "@tasksync_session";
 
-async function saveTasks(tasks: Task[]): Promise<void> {
+async function getCurrentUser(): Promise<User | null> {
+  try {
+    const session = await AsyncStorage.getItem(
+      SESSION_KEY
+    );
+
+    if (!session) {
+      return null;
+    }
+
+    return JSON.parse(session) as User;
+  } catch (error) {
+    console.error(
+      "Error al obtener la sesión actual:",
+      error
+    );
+
+    return null;
+  }
+}
+
+async function getTasksStorageKey(): Promise<string> {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    throw new Error(
+      "No existe una sesión activa."
+    );
+  }
+
+  return `@tasksync_tasks_${currentUser.id}`;
+}
+
+async function saveTasks(
+  tasks: Task[]
+): Promise<void> {
+  const storageKey =
+    await getTasksStorageKey();
+
   await AsyncStorage.setItem(
-    STORAGE_KEY,
+    storageKey,
     JSON.stringify(tasks)
   );
 }
@@ -15,11 +52,19 @@ async function saveTasks(tasks: Task[]): Promise<void> {
 export const taskService = {
   async getTasks(): Promise<Task[]> {
     try {
+      const storageKey =
+        await getTasksStorageKey();
+
       const data =
-        await AsyncStorage.getItem(STORAGE_KEY);
+        await AsyncStorage.getItem(
+          storageKey
+        );
 
       if (!data) {
-        await saveTasks([]);
+        await AsyncStorage.setItem(
+          storageKey,
+          JSON.stringify([])
+        );
 
         return [];
       }
@@ -40,31 +85,10 @@ export const taskService = {
   ): Promise<Task> {
     const tasks = await this.getTasks();
 
-    const taskId = Date.now().toString();
-
-    let notificationId: string | undefined;
-
-    if (
-      task.reminderEnabled &&
-      task.dueDate &&
-      task.dueTime &&
-      task.reminderMinutesBefore !== undefined
-    ) {
-      notificationId =
-        await notificationService.scheduleTaskReminder({
-          taskId,
-          title: task.title,
-          dueDate: task.dueDate,
-          dueTime: task.dueTime,
-          minutesBefore:
-            task.reminderMinutesBefore,
-        });
-    }
-
     const newTask: Task = {
-      id: taskId,
+      id: Date.now().toString(),
       ...task,
-      notificationId,
+      notificationId: undefined,
     };
 
     tasks.unshift(newTask);
@@ -88,60 +112,28 @@ export const taskService = {
       return undefined;
     }
 
-    await notificationService.cancelNotification(
-      currentTask.notificationId
-    );
-
-    const mergedTask: Task = {
+    const updatedTask: Task = {
       ...currentTask,
       ...updatedFields,
-      notificationId: undefined,
+      id: currentTask.id,
     };
 
-    let notificationId: string | undefined;
-
-    if (
-      mergedTask.reminderEnabled &&
-      !mergedTask.completed &&
-      mergedTask.dueDate &&
-      mergedTask.dueTime &&
-      mergedTask.reminderMinutesBefore !== undefined
-    ) {
-      notificationId =
-        await notificationService.scheduleTaskReminder({
-          taskId: mergedTask.id,
-          title: mergedTask.title,
-          dueDate: mergedTask.dueDate,
-          dueTime: mergedTask.dueTime,
-          minutesBefore:
-            mergedTask.reminderMinutesBefore,
-        });
-    }
-
-    const finalTask: Task = {
-      ...mergedTask,
-      notificationId,
-    };
-
-    const updatedTasks = tasks.map((task) =>
-      task.id === id ? finalTask : task
+    const updatedTasks = tasks.map(
+      (task) =>
+        task.id === id
+          ? updatedTask
+          : task
     );
 
     await saveTasks(updatedTasks);
 
-    return finalTask;
+    return updatedTask;
   },
 
-  async deleteTask(id: string): Promise<void> {
+  async deleteTask(
+    id: string
+  ): Promise<void> {
     const tasks = await this.getTasks();
-
-    const taskToDelete = tasks.find(
-      (task) => task.id === id
-    );
-
-    await notificationService.cancelNotification(
-      taskToDelete?.notificationId
-    );
 
     const updatedTasks = tasks.filter(
       (task) => task.id !== id
@@ -155,7 +147,9 @@ export const taskService = {
   ): Promise<Task | undefined> {
     const tasks = await this.getTasks();
 
-    return tasks.find((task) => task.id === id);
+    return tasks.find(
+      (task) => task.id === id
+    );
   },
 
   async getDashboard() {
