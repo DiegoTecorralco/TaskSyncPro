@@ -73,6 +73,8 @@ Si las credenciales son correctas, se crea una sesión y el usuario es enviado a
 
 Si las credenciales son incorrectas, se muestra un mensaje de error.
 
+En caso de no contar con una cuenta se podra agregar una cuenta totalmente nueva se espera poder añadir en futuras actualizaciones la opcion de confirmar correo electronico desde tu Gmail 
+
 ---
 
 ### 💾 Persistencia de sesión
@@ -80,7 +82,7 @@ Si las credenciales son incorrectas, se muestra un mensaje de error.
 La sesión del usuario se almacena con AsyncStorage.
 
 Esto permite que, al cerrar y volver a abrir la aplicación, el usuario permanezca autenticado sin tener que introducir nuevamente sus datos.
-
+Permite que el Usuario pueda seguir visualizando sus Tareas sin que estas se pierdan al momento de cerrar la sesion o eliminar la aplicacion 
 # 👥 Equipo de Desarrollo
 
 El desarrollo de **TaskSync Pro** fue realizado de manera colaborativa por los siguientes integrantes:
