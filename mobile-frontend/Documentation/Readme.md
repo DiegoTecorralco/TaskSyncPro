@@ -35,6 +35,7 @@ Desarrollar una aplicación móvil de gestión de tareas que permita registrar u
 - Permitir la actualización de información del perfil.
 - Separar la información de cada cuenta.
 - Guardar la información localmente con AsyncStorage.
+- La fecha de creacion y hora para la tarea se puede poner en hora local 
 
 ---
 
@@ -55,6 +56,7 @@ Durante el registro se realizan validaciones para evitar:
 - Correos electrónicos repetidos.
 - Contraseñas que no coincidan.
 - Registros con información incompleta.
+- Contraseña con caracteres menores al especificado
 
 Cada usuario registrado obtiene un identificador único.
 
