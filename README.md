@@ -97,6 +97,8 @@ El alcance del proyecto incluye:
 - Visualización de tareas mediante calendario.
 - Sincronización entre dispositivos.
 - Administración rápida de tareas desde el smartwatch.
+- Calendario con Tareas mensuales y semanales.
+- Se podra añadir a la Tarea La hora local.
 
 El sistema no incluirá funcionalidades avanzadas como sensores biométricos, inteligencia artificial, geolocalización o videollamadas, con el objetivo de mantener una aplicación sencilla, eficiente y fácil de utilizar.
 
