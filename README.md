@@ -379,6 +379,15 @@ Todos los contratos serán revisados por el área legal de la empresa.
 - Liberación de recursos.
 - Cierre financiero y administrativo.
 
+## Colaboradores del Proyecto
+
+El desarrollo de **TaskSync Pro** fue posible gracias al trabajo colaborativo del equipo de desarrollo, quienes participaron en las diferentes etapas del proyecto, desde la planeación y diseño hasta la implementación, pruebas y documentación.
+
+| Integrante | Rol Principal | Responsabilidades |
+|------------|---------------|-------------------|
+| Carlos Isaac Fosado Escudero | Desarrollador Frontend Mobile | Desarrollo de la aplicación móvil con React Native, interfaz de usuario, gestión de tareas, calendario, categorías, perfil de usuario, autenticación local y documentación técnica. |
+| Diego Salvador Tecorralco Martínez | Líder del Proyecto / Desarrollador Backend | Planeación del proyecto, arquitectura del sistema, desarrollo de la API REST, integración con la base de datos, autenticación, sincronización y coordinación general del proyecto. |
+
 **Fecha Estimada de Cierre:** 17 de julio de 2026
 
 
