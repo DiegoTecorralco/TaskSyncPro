@@ -25,373 +25,648 @@
 
 ## 1. Inicio del Proyecto
 
-**Nombre del Proyecto:** TaskSync Pro  
-**Gerente del Proyecto:** Diego Tecorralco  
-**Fecha de Inicio:** 4 de mayo de 2026  
-**Fecha Estimada de Cierre:** 17 de julio 2026
+**Nombre del Proyecto:** TaskSync Pro
 
-**Justificación del Proyecto:**  
-En un entorno donde la productividad personal y profesional es clave, existe una creciente necesidad de herramientas que integren la gestión de tareas con dispositivos wearables. TaskSync Pro nace para cubrir ese vacío, ofreciendo una solución sincronizada que permita a los usuarios organizar su día a día de forma ágil y eficiente, sin depender exclusivamente del teléfono móvil.
+**Gerente del Proyecto:** Diego Salvador Tecorralco Martinez
+
+**Fecha de Inicio:** 4 de mayo de 2026
+
+**Fecha Estimada de Cierre:** 17 de agosto de 2026
+
+**Metodología de Desarrollo:** Scrum
+
+**Justificación del Proyecto:**
+
+TaskSync Pro surge como una propuesta para facilitar la organización de actividades personales y profesionales mediante una aplicación de gestión de tareas.
+
+El proyecto busca permitir que los usuarios puedan administrar sus tareas, categorías, fechas, horarios y recordatorios, además de contemplar la consulta y actualización de tareas mediante un dispositivo wearable.
 
 **Objetivos Estratégicos:**
-- Posicionar a la empresa en el mercado de productividad wearable.
-- Ofrecer una alternativa ligera y funcional frente a competidores más complejos.
-- Fidelizar usuarios mediante una experiencia de uso sencilla y efectiva.
+
+- Facilitar la organización de actividades personales y profesionales.
+- Centralizar la gestión de tareas y recordatorios.
+- Permitir el acceso rápido a las tareas mediante un dispositivo wearable.
+- Mejorar la organización de actividades mediante categorías, fechas y horarios.
+- Desarrollar un sistema organizado y funcional mediante una metodología ágil.
 
 
 
 ## 2. Gestión de Alcance
 
 ### Entregables Principales:
-- Aplicación móvil nativa para iOS y Android.
-- Aplicación para smartwatch (Wear OS y watchOS).
-- Backend con API REST para sincronización en tiempo real.
-- Base de datos en la nube.
-- Documentación técnica y manual de usuario.
-- Plan de pruebas y resultados.
+
+- Aplicación principal para la gestión de tareas.
+- Aplicación para dispositivo wearable.
+- Base de datos.
+- Documentación de requisitos.
+- Documentación técnica.
+- Manual de usuario.
+- Plan de pruebas.
+- Resultados de pruebas.
+- Documentación de riesgos.
+- Documentación de comunicación.
+- Cronograma del proyecto.
+- Estimación de costos.
+- Documentación de cierre.
 
 ### Criterios de Aceptación:
-- Las tareas se crean, editan y eliminan correctamente.
-- Los recordatorios se disparan en el móvil y en el wearable.
-- La sincronización entre dispositivos ocurre en menos de 5 segundos.
-- La interfaz es funcional y cumple con estándares de usabilidad.
-- El sistema soporta al menos 1000 usuarios concurrentes.
+
+- Las tareas pueden ser creadas, consultadas, editadas y eliminadas.
+- Las tareas pueden organizarse mediante categorías.
+- Las tareas pueden contar con fechas y horarios.
+- Los recordatorios pueden asociarse a las tareas.
+- Las tareas recurrentes pueden ser administradas.
+- Las tareas pueden cambiar de estado.
+- Las tareas pueden consultarse desde el componente wearable.
+- Las tareas pueden marcarse como completadas desde el wearable.
+- La información se almacena correctamente.
+- La información se mantiene consistente entre los componentes del sistema.
+- Las funcionalidades cumplen con los requisitos establecidos.
 
 ### Exclusiones:
+
 - No se integrarán sensores biométricos.
-- No se usará inteligencia artificial para priorización automática.
+- No se utilizará inteligencia artificial para priorización automática.
 - No se incluirá geolocalización.
-- No se implementarán videollamadas ni mensajería instantánea.
+- No se implementarán videollamadas.
+- No se implementará mensajería instantánea.
+- No se incluirán funcionalidades que no estén relacionadas directamente con la gestión de tareas.
 
 
 
 ## 3. Tecnologías utilizadas
 
 | Componente | Tecnología |
-|------------|------------|
-| Frontend Móvil | React Native |
-| Frontend Wearable | React Native para Wear OS / SwiftUI para watchOS |
-| Backend | Node.js con Express |
-| Base de Datos | MongoDB / PostgreSQL |
-| Autenticación | JWT (JSON Web Tokens) |
-| Notificaciones | Firebase Cloud Messaging (FCM) / APNs |
-| Sincronización | WebSockets (Socket.io) |
-| Infraestructura | AWS (EC2, S3, RDS) |
+| ---------- | ---------- |
+| Aplicación principal | React Native |
+| Backend | Node.js |
+| Framework Backend | Express.js |
+| Base de Datos | MySQL |
+| Autenticación | JWT |
+| Contraseñas | bcrypt |
+| Validación | express-validator |
+| Comunicación en tiempo real | Socket.io |
+| Tareas programadas | node-cron |
+| Variables de entorno | dotenv |
+| Seguridad HTTP | helmet |
 | Control de Versiones | Git / GitHub |
-| CI/CD | GitHub Actions / Jenkins |
-| Pruebas | Jest, Detox, Selenium |
+| Pruebas de API | Postman |
+
+El proyecto utiliza estas tecnologías de acuerdo con las necesidades funcionales y técnicas definidas durante su desarrollo.
 
 
 
 ## 4. Descripción del Proyecto
 
-TaskSync Pro es una aplicación de gestión de tareas diseñada para facilitar la organización personal y profesional. La app permite crear, editar y categorizar tareas, asignarles fechas y horas límite, y programar recordatorios periódicos para ayudar al usuario a mantenerse al tanto de sus pendientes. TaskSync Pro sincroniza las tareas entre una aplicación móvil y un wearable, asegurando que las notificaciones y recordatorios lleguen a ambos dispositivos.
+TaskSync Pro es una aplicación de gestión de tareas diseñada para facilitar la organización personal y profesional.
+
+La aplicación permite crear, editar, eliminar y categorizar tareas, asignarles fechas y horarios, configurar recordatorios y administrar tareas recurrentes.
+
+El proyecto contempla además la sincronización de información entre la aplicación principal y un dispositivo wearable, permitiendo consultar y actualizar tareas desde el dispositivo.
 
 ### Alcance del Proyecto
 
-TaskSync Pro estará enfocada en la gestión y organización de tareas personales y profesionales mediante una plataforma sincronizada entre una aplicación móvil y un dispositivo wearable. El sistema permitirá a los usuarios administrar sus actividades diarias, configurar recordatorios personalizados y visualizar sus pendientes de manera rápida e intuitiva.
+TaskSync Pro estará enfocada en la gestión y organización de tareas personales y profesionales mediante una aplicación principal y un componente wearable.
+
+El sistema permitirá a los usuarios administrar sus actividades diarias, configurar recordatorios y visualizar sus pendientes de manera organizada.
 
 El alcance del proyecto incluye:
-- Gestión de tareas y categorías.
-- Configuración de recordatorios y fechas límite.
-- Visualización de tareas mediante calendario.
-- Sincronización entre dispositivos.
-- Administración rápida de tareas desde el smartwatch.
-- Calendario con Tareas mensuales y semanales.
-- Se podra añadir a la Tarea La hora local.
 
-El sistema no incluirá funcionalidades avanzadas como sensores biométricos, inteligencia artificial, geolocalización o videollamadas, con el objetivo de mantener una aplicación sencilla, eficiente y fácil de utilizar.
+- Gestión de tareas.
+- Gestión de categorías.
+- Configuración de recordatorios.
+- Administración de fechas límite.
+- Asignación de horarios.
+- Administración de tareas recurrentes.
+- Cambio de estados de las tareas.
+- Visualización mediante calendario.
+- Sincronización entre componentes.
+- Consulta de tareas desde el wearable.
+- Actualización del estado de las tareas desde el wearable.
+- Administración de usuarios.
+- Autenticación.
+
+El sistema no incluirá funcionalidades avanzadas como sensores biométricos, inteligencia artificial, geolocalización, videollamadas o mensajería instantánea.
 
 ### Objetivo General
 
-Desarrollar una aplicación de gestión de tareas sincronizada entre dispositivos móviles y wearables que permita a los usuarios organizar sus actividades mediante categorías, fechas límite y recordatorios personalizados para mejorar su productividad diaria.
+Desarrollar una aplicación de gestión de tareas sincronizada con un dispositivo wearable que permita a los usuarios organizar sus actividades mediante categorías, fechas, horarios y recordatorios.
 
 ### Funcionalidades Principales
 
-- **Creación de Tareas**: Los usuarios pueden crear tareas con título, descripción, fecha límite y hora límite.
-- **Categorías Personalizadas**: Las tareas se organizan en categorías como trabajo, personal, salud, estudio, ocio, entre otras.
-- **Recordatorios Personalizables**: Las tareas con fecha límite pueden tener recordatorios periódicos programados (por ejemplo, cada hora o día) antes de la fecha límite.
-- **Tareas Específicas del Día**: El usuario puede marcar tareas que deben realizarse en un día específico, con una hora exacta, recibiendo recordatorios solo antes de esa hora.
-- **Sincronización entre Dispositivos**: Las tareas se sincronizan automáticamente entre la app móvil y el wearable, asegurando que los recordatorios lleguen a ambos dispositivos.
-- **Marcar Tareas desde el Wearable**: En la app del smartwatch, el usuario puede ver las tareas pendientes y marcarlas como completadas con un simple toque.
-- **Vista de Calendario**: La app ofrece una vista de calendario donde el usuario puede visualizar las tareas distribuidas por día, ayudando a planificar y priorizar las actividades de forma visual.
-- **Interfaz Sencilla**: La experiencia de usuario (UX) se ha diseñado para ser intuitiva, con flujos claros y navegación ágil.
+- **Creación de Tareas:** Los usuarios pueden crear tareas proporcionando la información necesaria para su administración.
+- **Edición de Tareas:** Las tareas pueden modificarse cuando sea necesario.
+- **Eliminación de Tareas:** Las tareas pueden eliminarse del sistema.
+- **Categorías Personalizadas:** Las tareas pueden organizarse mediante categorías.
+- **Fechas y Horarios:** Las tareas pueden contar con fechas y horarios específicos.
+- **Recordatorios:** Las tareas pueden tener recordatorios asociados.
+- **Recurrencias:** El sistema contempla tareas que pueden repetirse de acuerdo con una configuración determinada.
+- **Cambio de Estado:** Las tareas pueden cambiar de estado durante su ciclo de vida.
+- **Tareas Específicas del Día:** El usuario puede organizar actividades para fechas y horarios determinados.
+- **Sincronización entre Dispositivos:** La información de las tareas puede mantenerse sincronizada entre la aplicación principal y el wearable.
+- **Marcar Tareas desde el Wearable:** El usuario puede consultar y marcar tareas como completadas desde el dispositivo wearable.
+- **Vista de Calendario:** Las tareas pueden visualizarse organizadas por fecha mediante un calendario.
+- **Interfaz Sencilla:** La aplicación busca proporcionar una experiencia de uso clara y sencilla.
 
 ### Objetivos Específicos
 
 - Permitir la creación, edición y eliminación de tareas.
-- Implementar categorías para una mejor organización de actividades.
-- Configurar recordatorios personalizables para tareas importantes.
-- Incorporar tareas específicas del día con horarios definidos.
-- Sincronizar las tareas entre la aplicación móvil y el wearable.
-- Permitir marcar tareas como completadas desde el smartwatch.
-- Implementar una vista de calendario para facilitar la planificación diaria.
-- Diseñar una interfaz intuitiva y fácil de utilizar.
+- Implementar categorías para una mejor organización.
+- Configurar recordatorios para las tareas.
+- Incorporar fechas y horarios.
+- Implementar tareas recurrentes.
+- Implementar diferentes estados para las tareas.
+- Sincronizar la información entre la aplicación principal y el wearable.
+- Permitir marcar tareas como completadas desde el wearable.
+- Implementar una vista de calendario.
+- Diseñar una interfaz intuitiva.
+- Mantener organizada la información del sistema.
 
 ### Público Objetivo
 
-TaskSync Pro está dirigida a personas que desean mejorar su productividad y organización, tanto en su vida personal como profesional, y que buscan una herramienta accesible desde su smartphone y su smartwatch.
+TaskSync Pro está dirigida a personas que desean mejorar su organización personal y profesional mediante una herramienta que permita administrar sus tareas desde una aplicación y consultar sus actividades desde un dispositivo wearable.
 
 ### Beneficios Clave
 
-- Centralización de las tareas en un solo lugar.
-- Recordatorios configurables para evitar olvidos.
-- Flexibilidad en la organización mediante categorías.
-- Acceso rápido a las tareas desde la muñeca, ideal para consultar y marcar pendientes sin sacar el teléfono.
+- Centralización de las tareas.
+- Organización mediante categorías.
+- Recordatorios para actividades importantes.
+- Organización mediante fechas y horarios.
+- Visualización de tareas mediante calendario.
+- Acceso rápido a las tareas desde un wearable.
+- Facilidad para actualizar el estado de las tareas.
 
 ### Metodología de Desarrollo
 
-El proyecto será desarrollado utilizando la metodología ágil Scrum, permitiendo una organización eficiente del trabajo mediante iteraciones cortas y colaborativas. Esta metodología facilitará la planificación, seguimiento y mejora continua durante el desarrollo del sistema.
+El proyecto utiliza la metodología ágil **Scrum**, permitiendo organizar el trabajo mediante iteraciones y actividades de planificación, desarrollo, revisión y mejora continua.
+
+Scrum se utilizó para facilitar la distribución de actividades, seguimiento de avances, identificación de problemas y revisión de los resultados obtenidos durante el desarrollo.
 
 #### Roles Scrum
 
-- **Product Owner**: Responsable de definir las funcionalidades y necesidades del sistema.
-- **Scrum Master**: Encargado de supervisar la correcta implementación de Scrum y facilitar el trabajo del equipo.
-- **Development Team**: Responsable del diseño, desarrollo, pruebas e implementación de la aplicación.
+- **Product Owner:** Responsable de representar las necesidades del proyecto y priorizar las funcionalidades.
+- **Scrum Master:** Responsable de facilitar la correcta aplicación de Scrum y apoyar al equipo durante el desarrollo.
+- **Development Team:** Responsable del análisis, diseño, desarrollo, pruebas, integración y documentación del proyecto.
+
+#### Eventos Scrum
+
+Durante el desarrollo se contemplan:
+
+- Sprint Planning.
+- Daily Scrum.
+- Sprint Review.
+- Sprint Retrospective.
 
 ### Conclusión
 
-TaskSync Pro busca ofrecer una solución sencilla, moderna y eficiente para la gestión de tareas y recordatorios mediante una experiencia sincronizada entre dispositivos móviles y wearables. La aplicación está enfocada en mejorar la productividad y facilitar la organización diaria de los usuarios mediante herramientas intuitivas y accesibles.
+TaskSync Pro busca proporcionar una solución sencilla para la gestión de tareas, permitiendo organizar actividades mediante categorías, fechas, horarios y recordatorios.
+
+La integración con un dispositivo wearable busca facilitar el acceso a las tareas y permitir su actualización de forma rápida.
 
 
 
 ## 5. Documentación
 
-Se generará la siguiente documentación durante el ciclo de vida del proyecto:
+Durante el ciclo de vida del proyecto se generó y organizó documentación relacionada con el desarrollo y la gestión del proyecto.
 
-- Documento de Visión y Alcance
-- Plan de Gestión del Proyecto
-- Especificación de Requisitos Funcionales y No Funcionales
-- Arquitectura de Software
-- Manual de Usuario
-- Manual Técnico para Desarrolladores
-- Plan de Pruebas
-- Informe de Cierre
+Entre la documentación se contempla:
 
-Todos los documentos estarán disponibles en un repositorio compartido (Google Drive / SharePoint) y se actualizarán en cada sprint.
+- Documento de Visión y Alcance.
+- Requisitos Funcionales.
+- Requisitos No Funcionales.
+- Historias de Usuario.
+- Reglas de Negocio.
+- Interfaces de Usuario.
+- Modelos de datos.
+- Manual de Usuario.
+- Manual Técnico.
+- Plan de Pruebas.
+- Resultados de Pruebas.
+- Gestión de Riesgos.
+- Control de Cambios.
+- Informes de Avance.
+- Acuerdos de Comunicación.
+- Cronograma.
+- Estimación de Costos.
+- Documentación de Cierre.
+
+La documentación se encuentra organizada dentro del repositorio y en los archivos correspondientes al proyecto.
 
 
 
 ## 6. Estructura del Proyecto
 
-DataBases
-│   ├───NoSQL
-│   │   ├───Backups
-│   │   ├───DD
-│   │   └───Schemas
-│   └───SQL
-│       ├───Backups
-│       ├───DD
-│       ├───ERD
-│       └───RM
-├───DataModels
-│   ├───Supervised_LMs
-│   └───Unsupervised_LMs
-├───Deliverables
-│   ├───API
-│   │   ├───build
-│   │   ├───Deployment
-│   │   └───sourse
-│   │       ├───config
-│   │       ├───controllers
-│   │       ├───cron
-│   │       ├───DAO
-│   │       ├───middleware
-│   │       ├───models
-│   │       ├───routes
-│   │       ├───services
-│   │       └───utils
-│   ├───WebApp
-│   │   ├───build
-│   │   ├───Deployment
-│   │   ├───sourse
-│   │   │   ├───backend
-│   │   │   └───frontend
-│   │   └───UserManual
-│   └───WerableApp
-│       ├───build
-│       ├───Deployment
-│       ├───sourse
-│       │   ├───backend
-│       │   └───frontend
-│       └───UserManual
-└───DOCs
-    ├───BRs
-    ├───Frs
-    ├───GUIs
-    │   ├───WebApp
-    │   └───WerableApp
-    ├───NFRs
-    ├───UHs
-    └───URs
+```text
+TaskSyncPro/
+├── DataBases/
+│   ├── NoSQL/
+│   │   ├── Backups/
+│   │   ├── DD/
+│   │   └── Schemas/
+│   └── SQL/
+│       ├── Backups/
+│       ├── DD/
+│       ├── ERD/
+│       └── RM/
+├── DataModels/
+│   ├── Supervised_LMs/
+│   └── Unsupervised_LMs/
+├── Deliverables/
+│   ├── API/
+│   │   ├── build/
+│   │   ├── Deployment/
+│   │   └── source/
+│   ├── WebApp/
+│   │   ├── build/
+│   │   ├── Deployment/
+│   │   ├── source/
+│   │   └── UserManual/
+│   └── WearableApp/
+│       ├── build/
+│       ├── Deployment/
+│       ├── source/
+│       └── UserManual/
+└── DOCs/
+    ├── BRs/
+    ├── FRs/
+    ├── GUIs/
+    │   ├── WebApp/
+    │   └── WearableApp/
+    ├── NFRs/
+    ├── UHs/
+    └── URs/
+````
 
+La estructura organiza los diferentes componentes, entregables y documentos del proyecto.
+
+La carpeta `Deliverables` contiene los componentes desarrollados y sus respectivos entregables.
+
+La carpeta `DataBases` contiene los elementos relacionados con los modelos y documentación de las bases de datos.
+
+La carpeta `DOCs` contiene la documentación relacionada con requisitos, reglas de negocio, interfaces e historias de usuario.
 
 ## 7. Gestión de Recursos Humanos
 
-| Rol | Responsable | Funciones |
-|-----|-------------|-----------|
-| Product Owner | Laura Fernández | Definir prioridades, gestionar backlog, validar entregables |
-| Scrum Master | Andrés Torres | Facilitar ceremonias, eliminar impedimentos, asegurar metodología |
-| Desarrollador Backend | 2 personas | API, base de datos, sincronización |
-| Desarrollador Mobile | 2 personas | App iOS y Android |
-| Desarrollador Wearable | 1 persona | App para smartwatch |
-| Diseñador UX/UI | 1 persona | Prototipos, flujos, diseño visual |
-| QA Tester | 1 persona | Pruebas funcionales, automatizadas y de rendimiento |
-| DevOps | 1 persona | Infraestructura, despliegue, monitoreo |
+El equipo está conformado por 3 personas, cada miembro asume diferentes responsabilidades para cubrir las áreas necesarias durante el desarrollo del proyecto.
 
-**Total:** 10 personas
+| Integrante                         | Rol Principal                              | Funciones Adicionales                                                                                                                         |
+| ---------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Diego Salvador Tecorralco Martinez | Líder del Proyecto / Desarrollador Backend | Planeación del proyecto, desarrollo, arquitectura, integración con la base de datos, autenticación, coordinación general y gestión de calidad |
+| Carlos Isaac Fosado Escudero       | Desarrollador Frontend Mobile              | Desarrollo de interfaz, gestión de tareas, calendario, categorías, perfil, autenticación local y documentación                                |
+| Ailton Artiaga Quiroga             | Desarrollador Full Stack / Wearable        | Participación en el componente wearable, integración y apoyo en las actividades de desarrollo                                                 |
 
+**Total:** 3 personas
 
+### Distribución de Responsabilidades por Área
+
+| Área                 | Responsable(s)         |
+| -------------------- | ---------------------- |
+| Backend              | Diego Tecorralco       |
+| Base de Datos        | Diego Tecorralco       |
+| Autenticación        | Diego Tecorralco       |
+| App Móvil            | Carlos Fosado          |
+| Diseño UX/UI         | Carlos Fosado          |
+| App Wearable         | Ailton Artiaga Quiroga |
+| Integración          | Equipo de desarrollo   |
+| Pruebas              | Todos los integrantes  |
+| Documentación        | Todos los integrantes  |
+| Gestión del Proyecto | Diego Tecorralco       |
 
 ## 8. Gestión de Interesados
 
-| Interesado | Rol | Expectativas |
-|------------|-----|--------------|
-| Patrocinador | Innovación Digital S.A. | Retorno de inversión, lanzamiento exitoso |
-| Usuarios finales | Personas que usan wearables | App intuitiva, sincronización rápida, notificaciones útiles |
-| Equipo de desarrollo | Técnicos | Claridad en requisitos, herramientas adecuadas |
-| Equipo de marketing | Difusores | Funcionalidades diferenciadoras |
-| Inversionistas | Socios estratégicos | Cumplimiento de plazos y calidad |
+| Interesado             | Rol                                         | Expectativas                                                        |
+| ---------------------- | ------------------------------------------- | ------------------------------------------------------------------- |
+| Equipo de desarrollo   | Equipo responsable del proyecto             | Requisitos claros, organización y distribución adecuada del trabajo |
+| Usuarios finales       | Usuarios del sistema                        | Aplicación sencilla, funcional y fácil de utilizar                  |
+| Usuarios de wearable   | Usuarios que utilizan dispositivos wearable | Acceso rápido a las tareas y actualización de estados               |
+| Docentes / Evaluadores | Evaluación del proyecto                     | Documentación, evidencia y resultados del desarrollo                |
+| Colaboradores          | Apoyo al proyecto                           | Comunicación y organización adecuada                                |
 
 **Estrategia de comunicación:**
-Reuniones mensuales con patrocinadores, sesiones de feedback con usuarios beta cada sprint, y reportes semanales de avance.
 
+Se utilizarán reuniones de seguimiento, actividades Scrum, comunicación directa entre los integrantes y documentación de los avances para mantener informados a los participantes del proyecto.
 
 ## 9. Gestión del Tiempo
 
 **Cronograma de Alto Nivel:**
 
+El proyecto se desarrolla del **4 de mayo de 2026 al 17 de agosto de 2026**.
 
+El cronograma contempla actividades relacionadas con el análisis, diseño, desarrollo, integración, pruebas, corrección y estabilización del proyecto.
 
+| Área              | Actividad                     | Periodo                 |
+| ----------------- | ----------------------------- | ----------------------- |
+| Backend           | Análisis y diseño             | 04/05/2026 - 17/05/2026 |
+| Backend           | Base de datos y autenticación | 18/05/2026 - 31/05/2026 |
+| Backend           | Tareas y categorías           | 01/06/2026 - 21/06/2026 |
+| Backend           | Recordatorios                 | 22/06/2026 - 05/07/2026 |
+| Backend           | Sincronización                | 06/07/2026 - 19/07/2026 |
+| Backend           | Pruebas y optimización        | 20/07/2026 - 02/08/2026 |
+| Backend           | Estabilización                | 03/08/2026 - 17/08/2026 |
+| Frontend Mobile   | Análisis y navegación         | 04/05/2026 - 17/05/2026 |
+| Frontend Mobile   | Autenticación y estructura    | 18/05/2026 - 31/05/2026 |
+| Frontend Mobile   | Tareas y categorías           | 01/06/2026 - 21/06/2026 |
+| Frontend Mobile   | Recordatorios y calendario    | 22/06/2026 - 05/07/2026 |
+| Frontend Mobile   | Sincronización                | 06/07/2026 - 19/07/2026 |
+| Frontend Mobile   | Pruebas                       | 20/07/2026 - 02/08/2026 |
+| Frontend Mobile   | Correcciones finales          | 03/08/2026 - 17/08/2026 |
+| Frontend Wearable | Diseño                        | 01/06/2026 - 14/06/2026 |
+| Frontend Wearable | Lista y detalle de tareas     | 15/06/2026 - 28/06/2026 |
+| Frontend Wearable | Completar tareas              | 29/06/2026 - 12/07/2026 |
+| Frontend Wearable | Sincronización                | 13/07/2026 - 26/07/2026 |
+| Frontend Wearable | Optimización                  | 27/07/2026 - 09/08/2026 |
+| Frontend Wearable | Pruebas y correcciones        | 10/08/2026 - 17/08/2026 |
+
+**Diagrama de Gantt en Excel:**
+
+* [Diagrama de Gantt en Excel](images/Gantt_TaskSyncPro.xlsx)
+
+**Datos del Gantt en CSV:**
+
+* [Datos del Gantt en CSV](images/Gantt_TaskSyncPro.csv)
 
 ## 10. Gestión de Costos
 
-| Concepto | Costo Estimado (USD) |
-|----------|----------------------|
-| Recursos humanos (10 pers. x 7 meses) | 210,000 |
-| Infraestructura AWS (7 meses) | 7,000 |
-| Licencias de software | 2,500 |
-| Dispositivos de prueba (smartphones y wearables) | 4,000 |
-| Marketing y lanzamiento | 10,000 |
-| Contingencias (10%) | 23,350 |
-| **Total** | **256,850 USD** |
+La estimación de costos del proyecto se realizó considerando los módulos funcionales y los recursos necesarios para su desarrollo.
 
-**Fuente de financiamiento:** Capital propio de Innovación Digital S.A.
+El modelo utilizado contempla una clasificación de complejidad para estimar las horas de trabajo.
 
+### Método de Estimación
+
+| Complejidad | Horas |
+| ----------- | ----- |
+| Simple      | 4     |
+| Muy fácil   | 8     |
+| Fácil       | 16    |
+| Normal      | 24    |
+| Difícil     | 32    |
+| Muy difícil | 40    |
+
+### Cálculo de Horas por Módulo
+
+| Módulo                  | Complejidad asignada | Horas estimadas |
+| ----------------------- | -------------------- | --------------- |
+| Configurar Backend/API  | Muy fácil            | 8               |
+| Diseño Base de Datos    | Muy fácil            | 8               |
+| Autenticación JWT       | Fácil                | 16              |
+| CRUD de Tareas          | Normal               | 24              |
+| Categorías              | Normal               | 24              |
+| Calendario              | Difícil              | 32              |
+| Recordatorios           | Difícil              | 32              |
+| Sincronización Wearable | Muy difícil          | 40              |
+| Notificaciones          | Difícil              | 32              |
+| Interfaz                | Normal               | 24              |
+| Aplicación Wearable     | Muy difícil          | 40              |
+| Pruebas e Integración   | Normal               | 24              |
+
+### Totales de Tiempo Estimado
+
+| Concepto         | Valor         |
+| ---------------- | ------------- |
+| **Total Horas**  | **304 horas** |
+| Días (8h/día)    | 38 días       |
+| Semanas (5d/sem) | 7.6 semanas   |
+| Meses (4sem/mes) | 1.9 meses     |
+
+Estos datos se encuentran documentados en el archivo de estimación de costos.
+
+**Estimación de Costos TaskSync Pro con fórmulas:**
+
+* [Estimacion Costos TaskSyncPro con formulas](images/Estimacion_Costos_TaskSync_Pro_con_formulas.xlsx)
+
+### Desglose de Costos por Categoría
+
+| Categoría           | Concepto                            | Costo (MXN) |
+| ------------------- | ----------------------------------- | ----------- |
+| **Desarrollo**      | Backend                             | $25,000     |
+| **Desarrollo**      | Frontend Web                        | $18,000     |
+| **Desarrollo**      | App Móvil                           | $22,000     |
+| **Desarrollo**      | Wearable                            | $12,000     |
+| **Infraestructura** | Hosting y BD                        | $6,000      |
+| **Infraestructura** | Dominio/SSL                         | $1,500      |
+| **Herramientas**    | GitHub / herramientas               | $3,000      |
+| **QA**              | Pruebas                             | $8,000      |
+| **Documentación**   | Manuales                            | $4,000      |
+|                     | **Subtotal Desarrollo y Operación** | **$99,500** |
+
+### Recursos Extra (Opcionales)
+
+| Categoría       | Concepto                       | Costo (MXN) |
+| --------------- | ------------------------------ | ----------- |
+| Marketing       | Publicidad / lanzamiento       | $10,000     |
+| Soporte         | Soporte técnico                | $9,000      |
+| Diseño          | Diseño UX/UI adicional         | $6,000      |
+| Infraestructura | Servidor de pruebas            | $3,000      |
+| Herramientas    | Servicios externos             | $4,000      |
+| Legal           | Aviso de privacidad / términos | $3,500      |
+| Capacitación    | Capacitación al equipo         | $2,500      |
+|                 | **Subtotal Recursos Extra**    | **$38,000** |
+
+### Resumen Financiero
+
+| Concepto                    | Costo (MXN)      |
+| --------------------------- | ---------------- |
+| Desarrollo y Operación      | $99,500          |
+| Recursos Extra (opcionales) | $38,000          |
+| **Total General**           | **$137,500 MXN** |
+
+> **Nota:** Los valores corresponden a estimaciones de costos del proyecto y no representan necesariamente gastos realizados.
+
+* [Estimacion Costos TaskSyncPro con formulas](images/Estimacion_Costos_TaskSync_Pro_con_formulas.xlsx)
+
+**Fuente de financiamiento:** Autofinanciado por el equipo de desarrollo.
+
+### Estrategia de Reducción de Costos
+
+Dado que el proyecto es autofinanciado, se consideran las siguientes estrategias:
+
+| Área                   | Estrategia                                       |
+| ---------------------- | ------------------------------------------------ |
+| Infraestructura        | Utilizar servicios gratuitos o de bajo costo     |
+| Herramientas           | Utilizar herramientas gratuitas o educativas     |
+| Dispositivos de prueba | Utilizar dispositivos propios y emuladores       |
+| Documentación          | Utilizar herramientas disponibles para el equipo |
+| Desarrollo             | Utilizar software de código abierto o gratuito   |
 
 ## 11. Gestión de Adquisiciones
 
-| Ítem | Proveedor | Tipo |
-|------|-----------|------|
-| Servicios en la nube | AWS | Contrato mensual |
-| Herramientas de diseño | Figma | Licencia anual |
-| Herramientas de prueba | BrowserStack | Licencia anual |
-| Dispositivos físicos | Apple / Samsung | Compra directa |
-| Dominio y SSL | Namecheap | Compra anual |
+| Ítem                       | Proveedor / Herramienta          | Tipo                  | Nota                      |
+| -------------------------- | -------------------------------- | --------------------- | ------------------------- |
+| Control de versiones       | GitHub                           | Gratuito              | Administración del código |
+| Herramientas de desarrollo | Visual Studio Code               | Gratuito              | Desarrollo del proyecto   |
+| Pruebas                    | Postman                          | Gratuito / Disponible | Pruebas del sistema       |
+| Base de datos              | MySQL                            | Gratuito / Local      | Almacenamiento            |
+| Comunicación               | WhatsApp / Discord / Google Meet | Disponible            | Comunicación del equipo   |
+| Documentación              | Google Drive / GitHub            | Disponible            | Organización documental   |
 
-Todos los contratos serán revisados por el área legal de la empresa.
-
+Las adquisiciones se gestionan de acuerdo con las necesidades reales del proyecto, priorizando herramientas gratuitas o disponibles para el equipo.
 
 ## 12. Gestión de la Comunicación
 
-| Tipo | Frecuencia | Participantes |
-|------|------------|---------------|
-| Daily Standup | Diaria (15 min) | Equipo de desarrollo |
-| Sprint Planning | Cada 2 semanas | Todo el equipo |
-| Sprint Review | Cada 2 semanas | Todo el equipo + stakeholders |
-| Sprint Retrospective | Cada 2 semanas | Equipo de desarrollo |
-| Informe de avance | Semanal | Gerente del proyecto → Patrocinador |
-| Newsletter interna | Mensual | Todo el equipo |
+Dado que el equipo está conformado por 3 personas, la comunicación se mantiene de manera directa y se complementa con las ceremonias de Scrum.
 
-**Herramientas:** Slack, Jira, Confluence, Google Meet.
+| Tipo                   | Frecuencia            | Participantes   |
+| ---------------------- | --------------------- | --------------- |
+| Daily Standup          | Periódica             | Equipo completo |
+| Sprint Planning        | Inicio de cada sprint | Equipo completo |
+| Sprint Review          | Final de cada sprint  | Equipo completo |
+| Sprint Retrospective   | Final de cada sprint  | Equipo completo |
+| Informe de avance      | Periódico             | Equipo completo |
+| Reunión de seguimiento | Periódica             | Equipo completo |
 
+**Herramientas:**
+
+* WhatsApp.
+* Discord.
+* Google Meet.
+* GitHub.
+* Google Drive.
 
 ## 13. Gestión de la Calidad
 
-**Estándares Aplicados:**
-- ISO 25010 para calidad de software.
-- Estándares de accesibilidad WCAG 2.1 (nivel AA).
+### Estándares Aplicados
 
-**Actividades de Calidad:**
-- Revisiones de código (pull requests) con al menos 2 aprobaciones.
-- Pruebas unitarias con cobertura mínima del 80%.
-- Pruebas de integración continua en cada commit.
-- Pruebas de usabilidad con usuarios reales.
-- Auditorías de rendimiento y seguridad.
+* ISO/IEC 25010 como referencia para la calidad del software.
 
-**Métricas de Calidad:**
-- Tasa de defectos por sprint < 5%.
-- Tiempo promedio de resolución de bugs < 2 días.
-- Satisfacción del usuario en pruebas beta > 4.5/5.
+### Actividades de Calidad
 
+* Revisiones del código.
+* Pruebas funcionales.
+* Pruebas de integración.
+* Validación de datos.
+* Revisión de autenticación.
+* Revisión de funcionalidades.
+* Corrección de errores.
+* Revisión de documentación.
+* Validación de la sincronización.
+* Pruebas de usabilidad.
+
+### Aspectos Evaluados
+
+* Funcionalidad.
+* Seguridad.
+* Compatibilidad.
+* Usabilidad.
+* Mantenibilidad.
+* Fiabilidad.
+* Rendimiento.
+
+La calidad se revisa durante las diferentes etapas del proyecto para detectar errores y realizar las correcciones necesarias.
 
 ## 14. Gestión de Riesgos
 
-| Riesgo | Probabilidad | Impacto | Mitigación |
-|--------|--------------|---------|------------|
-| Retrasos en desarrollo | Media | Alto | Buffer en cronograma, priorización estricta |
-| Problemas de sincronización | Media | Alto | Pruebas intensivas con WebSockets, implementar colas de mensajes |
-| Baja adopción del wearable | Baja | Medio | Encuestas tempranas, diseño atractivo y funcional |
-| Fallos en notificaciones | Media | Alto | Pruebas en múltiples dispositivos, uso de FCM y APNs |
-| Cambios en requisitos | Media | Medio | Backlog flexible, sesiones de refinamiento continuo |
-| Rotación de personal | Baja | Alto | Documentación clara, conocimiento compartido |
+| Riesgo                          | Probabilidad | Impacto | Mitigación                                |
+| ------------------------------- | ------------ | ------- | ----------------------------------------- |
+| Retrasos en desarrollo          | Alta         | Alto    | Priorización de actividades y seguimiento |
+| Problemas de sincronización     | Media        | Alto    | Pruebas de integración                    |
+| Errores en recordatorios        | Media        | Alto    | Pruebas y validación                      |
+| Cambios en requisitos           | Media        | Medio   | Control de cambios y revisión del backlog |
+| Problemas de integración        | Media        | Alto    | Integración progresiva                    |
+| Errores en base de datos        | Media        | Alto    | Validación y pruebas                      |
+| Sobrecarga de trabajo           | Alta         | Alto    | Distribución de actividades               |
+| Dependencia tecnológica         | Media        | Medio   | Investigación y alternativas              |
+| Falta de tiempo                 | Alta         | Alto    | Priorización de funcionalidades           |
+| Problemas durante el despliegue | Media        | Medio   | Pruebas y estabilización                  |
 
+Los riesgos se revisan durante el desarrollo y pueden actualizarse conforme se identifican nuevos problemas o cambios en el proyecto.
 
 ## 15. Plan de Pruebas
 
-**Tipos de Pruebas:**
+### Tipos de Pruebas
 
-1. **Pruebas Unitarias:** Cada componente y servicio.
-2. **Pruebas de Integración:** API, base de datos, sincronización.
-3. **Pruebas de UI/UX:** Flujos completos en móvil y wearable.
-4. **Pruebas de Rendimiento:** Carga de 1000 usuarios simultáneos.
-5. **Pruebas de Seguridad:** Autenticación, JWT, cifrado.
-6. **Pruebas de Compatibilidad:** Dispositivos Android 8+, iOS 14+, Wear OS 3+, watchOS 8+.
-7. **Pruebas Beta:** Con 50 usuarios reales durante 2 semanas.
+1. **Pruebas Funcionales:** Verificación de las funcionalidades principales del sistema.
+2. **Pruebas de Integración:** Verificación de la comunicación entre los diferentes componentes.
+3. **Pruebas de Interfaz:** Verificación de navegación, visualización y funcionamiento de las interfaces.
+4. **Pruebas de Sincronización:** Verificación de la actualización de información entre los componentes.
+5. **Pruebas de Seguridad:** Verificación de autenticación, contraseñas, JWT y validación de datos.
+6. **Pruebas de Compatibilidad:** Verificación del funcionamiento en los dispositivos y entornos disponibles para el proyecto.
 
-**Herramientas:**
-- Jest (unitarias)
-- Detox (e2e móvil)
-- Postman / Newman (API)
-- JMeter (rendimiento)
-- BrowserStack (compatibilidad)
-- TestFlight / Google Play Beta (pruebas beta)
+### Funcionalidades a Probar
 
-**Criterios de Aprobación:**
-- 100% de pruebas unitarias aprobadas.
-- 95% de pruebas e2e exitosas.
-- Tiempo de respuesta < 2 segundos en condiciones normales.
-- Sin vulnerabilidades críticas de seguridad.
+* Registro de usuarios.
+* Inicio de sesión.
+* Creación de tareas.
+* Consulta de tareas.
+* Edición de tareas.
+* Eliminación de tareas.
+* Categorías.
+* Fechas.
+* Horarios.
+* Recordatorios.
+* Recurrencias.
+* Cambio de estados.
+* Calendario.
+* Sincronización.
+* Actualización desde el wearable.
 
+### Herramientas
+
+* Postman.
+* Navegadores.
+* Emuladores.
+* Dispositivos disponibles para el equipo.
+
+### Criterios de Aprobación
+
+* Las funcionalidades cumplen con los requisitos definidos.
+* Los datos se almacenan correctamente.
+* Las operaciones funcionan de acuerdo con lo esperado.
+* Las validaciones funcionan correctamente.
+* Los errores son controlados.
+* La información permanece consistente.
+* Las funcionalidades críticas no presentan errores que impidan su utilización.
 
 ## 16. Información del Cierre del Proyecto
 
-**Criterios de Cierre:**
-- Todos los entregables aceptados por el Product Owner.
-- Pruebas finales completadas y aprobadas.
-- Documentación técnica y de usuario finalizada.
-- Aplicación publicada en App Store y Google Play.
-- Transferencia de conocimiento al equipo de soporte.
+**Fecha Estimada de Cierre:** 17 de agosto de 2026
 
-**Actividades de Cierre:**
-- Reunión final con stakeholders.
-- Informe de lecciones aprendidas.
-- Liberación de recursos.
-- Cierre financiero y administrativo.
+### Criterios de Cierre
+
+* Funcionalidades principales desarrolladas.
+* Pruebas correspondientes realizadas.
+* Errores identificados atendidos.
+* Documentación organizada.
+* Entregables disponibles.
+* Lecciones aprendidas documentadas.
+* Revisión final realizada por el equipo.
+
+### Actividades de Cierre
+
+* Revisión final del proyecto.
+* Corrección de errores pendientes.
+* Ejecución de pruebas finales.
+* Revisión de documentación.
+* Organización de entregables.
+* Actualización del repositorio.
+* Elaboración de conclusiones.
+* Registro de lecciones aprendidas.
+* Cierre administrativo del proyecto.
+
+La publicación comercial en App Store o Google Play no forma parte de los criterios obligatorios de cierre del proyecto.
 
 ## Colaboradores del Proyecto
 
 El desarrollo de **TaskSync Pro** fue posible gracias al trabajo colaborativo del equipo de desarrollo, quienes participaron en las diferentes etapas del proyecto, desde la planeación y diseño hasta la implementación, pruebas y documentación.
 
-| Integrante | Rol Principal | Responsabilidades |
-|------------|---------------|-------------------|
-| Carlos Isaac Fosado Escudero | Desarrollador Frontend Mobile | Desarrollo de la aplicación móvil con React Native, interfaz de usuario, gestión de tareas, calendario, categorías, perfil de usuario, autenticación local y documentación técnica. |
-| Diego Salvador Tecorralco Martínez | Líder del Proyecto / Desarrollador Backend | Planeación del proyecto, arquitectura del sistema, desarrollo de la API REST, integración con la base de datos, autenticación, sincronización y coordinación general del proyecto. |
+| Integrante                         | Rol Principal                              | Responsabilidades                                                                                                         |
+| ---------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| Carlos Isaac Fosado Escudero       | Desarrollador Frontend Mobile              | Desarrollo de la aplicación móvil, interfaz de usuario, gestión de tareas, calendario, categorías, perfil y documentación |
+| Diego Salvador Tecorralco Martínez | Líder del Proyecto / Desarrollador Backend | Planeación, arquitectura, desarrollo, base de datos, autenticación, coordinación general y documentación                  |
+| Ailton Artiaga Quiroga             | Desarrollador Full Stack / Wearable        | Participación en el componente wearable, integración y apoyo en desarrollo                                                |
 
-**Fecha Estimada de Cierre:** 17 de julio de 2026
-
+**Fecha Estimada de Cierre:** 17 de agosto de 2026
 
 ## Conclusión General
 
-TaskSync Pro es un proyecto ambicioso pero perfectamente acotado, que combina la gestión de tareas con la comodidad de los wearables. Con una metodología ágil, un equipo multidisciplinario y una planificación detallada, se espera entregar un producto de alta calidad que cumpla con las expectativas de los usuarios y los objetivos de negocio. La documentación aquí presentada sienta las bases para un desarrollo ordenado, transparente y exitoso.
+TaskSync Pro es un proyecto de desarrollo de software orientado a la gestión y organización de tareas personales y profesionales.
+
+El sistema contempla la administración de tareas, categorías, fechas, horarios, recordatorios, recurrencias y estados, además de la consulta y actualización de tareas mediante un dispositivo wearable.
+
+El desarrollo del proyecto utiliza la metodología ágil **Scrum**, permitiendo organizar las actividades mediante iteraciones, planificación, seguimiento, revisión y mejora continua.
+
+El proyecto cuenta con una planificación que comprende el periodo del **4 de mayo de 2026 al 17 de agosto de 2026**, incluyendo actividades de análisis, diseño, desarrollo, integración, pruebas, correcciones y estabilización.
+
+La documentación del proyecto contempla la gestión del alcance, recursos humanos, interesados, tiempo, costos, adquisiciones, comunicación, calidad, riesgos, control de cambios, pruebas y cierre.
+
+El proyecto se encuentra orientado a cumplir con los objetivos establecidos y mantener una documentación organizada que permita dar seguimiento al desarrollo y a los resultados obtenidos.
 

@@ -1,0 +1,21 @@
+﻿Área,Actividad,Inicio,Fin
+Backend,Análisis y diseño API,2026-05-04,2026-05-17
+Backend,Modelado BD y autenticación,2026-05-18,2026-05-31
+Backend,CRUD tareas/categorías,2026-06-01,2026-06-21
+Backend,Recordatorios y cron,2026-06-22,2026-07-05
+Backend,Socket.io y sincronización,2026-07-06,2026-07-19
+Backend,"Pruebas, seguridad y optimización",2026-07-20,2026-08-02
+Backend,Despliegue y estabilización,2026-08-03,2026-08-17
+Frontend móvil,Análisis UX y navegación,2026-05-04,2026-05-17
+Frontend móvil,Autenticación y estructura,2026-05-18,2026-05-31
+Frontend móvil,Tareas y categorías,2026-06-01,2026-06-21
+Frontend móvil,Recordatorios y calendario,2026-06-22,2026-07-05
+Frontend móvil,Sincronización y notificaciones,2026-07-06,2026-07-19
+Frontend móvil,Pruebas UI/E2E,2026-07-20,2026-08-02
+Frontend móvil,Beta y correcciones,2026-08-03,2026-08-17
+Frontend wearable,Diseño de flujo wearable,2026-06-01,2026-06-14
+Frontend wearable,Lista y detalle de tareas,2026-06-15,2026-06-28
+Frontend wearable,Completar tareas,2026-06-29,2026-07-12
+Frontend wearable,Sincronización con backend,2026-07-13,2026-07-26
+Frontend wearable,Notificaciones y optimización,2026-07-27,2026-08-09
+Frontend wearable,Pruebas y correcciones finales,2026-08-10,2026-08-17
