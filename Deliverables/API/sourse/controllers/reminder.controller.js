@@ -132,12 +132,21 @@ export const createNewReminder = async (req, res) => {
             });
         }
 
-        const reminderId = await createReminder({
+                const reminderId = await createReminder({
             usuario_id: parseInt(usuario_id),
             categoria_id: categoria_id ? parseInt(categoria_id) : null,
             titulo: titulo.trim(),
             descripcion: descripcion ? descripcion.trim() : null,
             fecha: fecha
+        });
+
+        // Emitir evento de nuevo recordatorio
+        io.to(`user-${usuario_id}`).emit("new-reminder", {
+            recordatorio_id: reminderId,
+            titulo,
+            descripcion,
+            fecha,
+            message: "Nuevo recordatorio creado"
         });
 
         return res.status(201).json({

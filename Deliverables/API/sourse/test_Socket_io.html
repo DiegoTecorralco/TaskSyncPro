@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Socket.io</title>
+</head>
+<body>
+    <h1>🔌 Test Socket.io</h1>
+    <div>
+        <input type="text" id="token" placeholder="Pega tu token JWT aquí" style="width: 300px;">
+        <button onclick="connect()">Conectar</button>
+    </div>
+    <div id="status" style="font-weight: bold;">Desconectado</div>
+    <div id="messages"></div>
+    <button onclick="sendTest()" disabled id="testBtn">Enviar prueba</button>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+        let socket;
+
+        function connect() {
+            const token = document.getElementById('token').value;
+            if (!token) {
+                alert('Primero obtén un token JWT con login');
+                return;
+            }
+
+            socket = io('http://localhost:3000', {
+                auth: { token }
+            });
+
+            socket.on('connect', () => {
+                document.getElementById('status').innerHTML =  'Conectado';
+                document.getElementById('status').style.color = 'green';
+                document.getElementById('testBtn').disabled = false;
+                addMessage('Conectado al servidor');
+                
+                // Suscribirse a notificaciones
+                socket.emit('subscribe-notifications');
+            });
+
+            socket.on('subscribed', (data) => {
+                addMessage(`${data.message}`);
+            });
+
+            socket.on('reminder-notification', (data) => {
+                addMessage(`Recordatorio: ${data.titulo || data.message}`);
+                console.log('Recordatorio recibido:', data);
+            });
+
+            socket.on('notification-test', (data) => {
+                addMessage(`Test: ${data.message}`);
+                console.log('Test recibido:', data);
+            });
+
+            socket.on('disconnect', () => {
+                document.getElementById('status').innerHTML = 'Desconectado';
+                document.getElementById('status').style.color = 'red';
+                document.getElementById('testBtn').disabled = true;
+                addMessage('Desconectado del servidor');
+            });
+
+            socket.on('error', (error) => {
+                addMessage(`Error: ${error.message}`);
+                console.error('Error:', error);
+            });
+        }
+
+        function sendTest() {
+            if (socket && socket.connected) {
+                socket.emit('test-notification', { 
+                    message: 'Hola desde el navegador!' 
+                });
+                addMessage('Test enviado');
+            }
+        }
+
+        function addMessage(msg) {
+            const div = document.getElementById('messages');
+            const p = document.createElement('p');
+            p.textContent = `${new Date().toLocaleTimeString()}: ${msg}`;
+            div.appendChild(p);
+        }
+    </script>
+</body>
+</html>

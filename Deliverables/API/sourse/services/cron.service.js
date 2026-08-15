@@ -1,13 +1,11 @@
 import cron from "node-cron";
 import pool from "../config/database.js";
 import { markAsNotified } from "../DAO/reminder.dao.js";
-
+import { emitReminderAlert } from "../config/socket.js";
 
 export const startReminderCron = () => {
-
     // Se ejecuta cada minuto
     cron.schedule("* * * * *", async () => {
-
         try {
             const now = new Date();
 
@@ -30,24 +28,25 @@ export const startReminderCron = () => {
                 return;
             }
 
-            console.log(`🔔 Recordatorios encontrados: ${reminders.length}`);
+            console.log(`Recordatorios encontrados: ${reminders.length}`);
 
             for (const reminder of reminders) {
+                // Notificar en tiempo real vía Socket.io
+                const sent = emitReminderAlert(reminder);
 
-                // AQUÍ IRÍA LA NOTIFICACIÓN REAL (push, socket, email, etc.)
-                console.log("📌 Notificación:");
-                console.log(`Usuario: ${reminder.usuario_id}`);
-                console.log(`Título: ${reminder.titulo}`);
-                console.log(`Descripción: ${reminder.descripcion}`);
+                if (sent) {
+                    console.log(`Notificación Socket.io enviada a usuario ${reminder.usuario_id}`);
+                } else {
+                    console.log(`Usuario ${reminder.usuario_id} no está conectado`);
+                }
 
                 // Marcar como notificado
                 await markAsNotified(reminder.recordatorio_id);
             }
-
         } catch (error) {
-            console.error("❌ Error en cron de recordatorios:", error.message);
+            console.error("Error en cron de recordatorios:", error.message);
         }
     });
 
-    console.log("⏰ Cron de recordatorios iniciado correctamente");
+    console.log("Cron de recordatorios con Socket.io iniciado correctamente");
 };
