@@ -6,13 +6,17 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import pool from "./config/database.js";
 
+// Importar Socket.io
+import { initSocket } from "./config/socket.js";
+
 // Rutas
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import taskRoutes from "./routes/task.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import reminderRoutes from "./routes/reminder.routes.js";
-import recurrenceRoutes from "./routes/recurrence.routes.js"; // ✅ Cambiado
+import recurrenceRoutes from "./routes/recurrence.routes.js";
+import socketTestRoutes from "./routes/socket.test.routes.js";
 
 const app = express();
 
@@ -47,7 +51,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/reminders", reminderRoutes);
-app.use("/api/recurrences", recurrenceRoutes); // ✅ Cambiado
+app.use("/api/recurrences", recurrenceRoutes);
+app.use("/api/socket-test", socketTestRoutes);
 
 /* ============================
      RUTA NO ENCONTRADA
@@ -71,25 +76,28 @@ app.use((err, req, res, next) => {
 });
 
 /* ============================
-   INICIAR SERVIDOR
+   INICIAR SERVIDOR CON SOCKET.IO
 ============================ */
 const PORT = process.env.PORT || 3000;
+
+// Inicializar Socket.io
+const { server, io } = initSocket(app);
 
 // Verificar conexión a la BD y luego iniciar
 (async () => {
     console.log('═══════════════════════════════════════');
     console.log('   TASKSYNC PRO API');
     console.log('═══════════════════════════════════════');
-    
+
     try {
         const [rows] = await pool.query('SELECT 1');
         console.log('✅ Conexión a la base de datos: OK');
     } catch (error) {
         console.error('❌ Error de conexión a la BD:', error.message);
     }
-    
-    app.listen(PORT, () => {
-        console.log(`✅ Servidor: http://localhost:${PORT}`);
+
+    server.listen(PORT, () => {
+        console.log(`✅ Servidor HTTP + Socket.io: http://localhost:${PORT}`);
         console.log('═══════════════════════════════════════');
     });
 })();
