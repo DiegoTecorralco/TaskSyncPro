@@ -7,11 +7,23 @@ import {
   useState,
 } from "react";
 
+import { API_URL } from "../config/api";
+import { authService } from "../services/auth.service";
 import { User } from "../types";
+
+interface RegisterData {
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  correo: string;
+  password: string;
+}
 
 interface AuthContextType {
   user: User | null;
+
   isAuthenticated: boolean;
+
   loading: boolean;
 
   login: (
@@ -20,9 +32,7 @@ interface AuthContextType {
   ) => Promise<boolean>;
 
   register: (
-    name: string,
-    email: string,
-    password: string
+    data: RegisterData
   ) => Promise<boolean>;
 
   updateProfile: (
@@ -32,12 +42,8 @@ interface AuthContextType {
   logout: () => Promise<void>;
 }
 
-interface StoredUser extends User {
-  password: string;
-}
-
 const SESSION_KEY = "@tasksync_session";
-const USERS_KEY = "@tasksync_users";
+const TOKEN_KEY = "@tasksync_token";
 
 const AuthContext =
   createContext<AuthContextType | undefined>(
@@ -63,50 +69,66 @@ export function AuthProvider({
 
   async function restoreSession() {
     try {
-      const session =
-        await AsyncStorage.getItem(
-          SESSION_KEY
-        );
+      setLoading(true);
 
-      if (session) {
-        const storedUser: User =
-          JSON.parse(session);
+      const [session, token] =
+        await Promise.all([
+          AsyncStorage.getItem(
+            SESSION_KEY
+          ),
 
-        setUser(storedUser);
+          AsyncStorage.getItem(
+            TOKEN_KEY
+          ),
+        ]);
+
+      if (!session || !token) {
+        setUser(null);
+        return;
       }
+
+      const storedUser =
+        JSON.parse(session);
+
+      const sessionUser: User = {
+        id:
+          storedUser.id?.toString() ??
+          storedUser.usuario_id?.toString(),
+
+        name:
+          storedUser.name ??
+          buildFullName(
+            storedUser.nombre,
+            storedUser.apellido_paterno,
+            storedUser.apellido_materno
+          ),
+
+        email:
+          storedUser.email ??
+          storedUser.correo,
+
+        avatar:
+          storedUser.avatar,
+      };
+
+      if (
+        !sessionUser.id ||
+        !sessionUser.email
+      ) {
+        await clearSession();
+        return;
+      }
+
+      setUser(sessionUser);
     } catch (error) {
       console.error(
         "Error al restaurar la sesión:",
         error
       );
 
-      await AsyncStorage.removeItem(
-        SESSION_KEY
-      );
+      await clearSession();
     } finally {
       setLoading(false);
-    }
-  }
-
-  async function getStoredUsers(): Promise<
-    StoredUser[]
-  > {
-    try {
-      const storedUsers =
-        await AsyncStorage.getItem(
-          USERS_KEY
-        );
-
-      return storedUsers
-        ? JSON.parse(storedUsers)
-        : [];
-    } catch (error) {
-      console.error(
-        "Error al leer los usuarios:",
-        error
-      );
-
-      return [];
     }
   }
 
@@ -115,65 +137,49 @@ export function AuthProvider({
     password: string
   ): Promise<boolean> {
     try {
-      const normalizedEmail = email
-        .trim()
-        .toLowerCase();
+      const normalizedEmail =
+        email.trim().toLowerCase();
 
-      const users = await getStoredUsers();
-
-      /*
-       * Usuario de prueba.
-       * Permite iniciar sesión aunque todavía
-       * no se haya registrado ningún usuario.
-       */
-      if (
-        users.length === 0 &&
-        normalizedEmail ===
-          "admin@tasksync.com" &&
-        password === "123456"
-      ) {
-        const defaultUser: StoredUser = {
-          id: Date.now().toString(),
-          name: "Carlos",
-          email: normalizedEmail,
-          password,
-        };
-
-        await AsyncStorage.setItem(
-          USERS_KEY,
-          JSON.stringify([defaultUser])
+      const response =
+        await authService.login(
+          normalizedEmail,
+          password
         );
 
-        const sessionUser: User = {
-          id: defaultUser.id,
-          name: defaultUser.name,
-          email: defaultUser.email,
-        };
-
-        await saveSession(sessionUser);
-
-        return true;
-      }
-
-      const foundUser = users.find(
-        (storedUser) =>
-          storedUser.email.toLowerCase() ===
-            normalizedEmail &&
-          storedUser.password === password
-      );
-
-      if (!foundUser) {
+      if (
+        !response.success ||
+        !response.data
+      ) {
         return false;
       }
 
+      const backendUser =
+        response.data.user;
+
       const sessionUser: User = {
-        id: foundUser.id,
-        name: foundUser.name,
-        email: foundUser.email,
-        avatar: foundUser.avatar,
+        id:
+          backendUser.usuario_id.toString(),
+
+        name: buildFullName(
+          backendUser.nombre,
+          backendUser.apellido_paterno,
+          backendUser.apellido_materno
+        ),
+
+        email:
+          backendUser.correo,
+
+        avatar: undefined,
       };
 
-      await saveSession(sessionUser);
+      await AsyncStorage.setItem(
+        SESSION_KEY,
+        JSON.stringify(
+          sessionUser
+        )
+      );
+
+      setUser(sessionUser);
 
       return true;
     } catch (error) {
@@ -187,74 +193,38 @@ export function AuthProvider({
   }
 
   async function register(
-    name: string,
-    email: string,
-    password: string
+    data: RegisterData
   ): Promise<boolean> {
     try {
-      const cleanName = name.trim();
+      const response =
+        await authService.register({
+          nombre:
+            data.nombre.trim(),
 
-      const normalizedEmail = email
-        .trim()
-        .toLowerCase();
+          apellido_paterno:
+            data.apellido_paterno.trim(),
 
-      const users = await getStoredUsers();
+          apellido_materno:
+            data.apellido_materno.trim(),
 
-      const emailExists = users.some(
-        (storedUser) =>
-          storedUser.email.toLowerCase() ===
-          normalizedEmail
-      );
+          correo:
+            data.correo
+              .trim()
+              .toLowerCase(),
 
-      if (emailExists) {
-        return false;
-      }
+          password:
+            data.password,
+        });
 
-      const newUser: StoredUser = {
-        id: Date.now().toString(),
-        name: cleanName,
-        email: normalizedEmail,
-        password,
-      };
-
-      const updatedUsers = [
-        ...users,
-        newUser,
-      ];
-
-      await AsyncStorage.setItem(
-        USERS_KEY,
-        JSON.stringify(updatedUsers)
-      );
-
-      const sessionUser: User = {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-      };
-
-      await saveSession(sessionUser);
-
-      return true;
+      return response.success;
     } catch (error) {
       console.error(
-        "Error al registrar el usuario:",
+        "Error al registrar usuario:",
         error
       );
 
       return false;
     }
-  }
-
-  async function saveSession(
-    sessionUser: User
-  ) {
-    await AsyncStorage.setItem(
-      SESSION_KEY,
-      JSON.stringify(sessionUser)
-    );
-
-    setUser(sessionUser);
   }
 
   async function updateProfile(
@@ -265,52 +235,90 @@ export function AuthProvider({
     }
 
     try {
-      const users = await getStoredUsers();
+      const token =
+        await AsyncStorage.getItem(
+          TOKEN_KEY
+        );
 
-      const updatedUser: User = {
-        ...user,
-        ...data,
-        id: user.id,
-        name:
-          data.name?.trim() ||
-          user.name,
-        email:
-          data.email
-            ?.trim()
-            .toLowerCase() ||
-          user.email,
-      };
+      const fullName =
+        data.name?.trim() ||
+        user.name;
 
-      const emailExists = users.some(
-        (storedUser) =>
-          storedUser.id !== user.id &&
-          storedUser.email.toLowerCase() ===
-            updatedUser.email.toLowerCase()
+      const nameParts = fullName
+        .split(/\s+/)
+        .filter(Boolean);
+
+      const nombre =
+        nameParts[0] || "";
+
+      const apellido_paterno =
+        nameParts[1] || "";
+
+      const apellido_materno =
+        nameParts
+          .slice(2)
+          .join(" ");
+
+      const correo =
+        data.email
+          ?.trim()
+          .toLowerCase() ||
+        user.email;
+
+      const response = await fetch(
+        `${API_URL}/users/${user.id}`,
+        {
+          method: "PUT",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            ...(token
+              ? {
+                  Authorization:
+                    `Bearer ${token}`,
+                }
+              : {}),
+          },
+
+          body: JSON.stringify({
+            nombre,
+            apellido_paterno,
+            apellido_materno,
+            correo,
+          }),
+        }
       );
 
-      if (emailExists) {
+      const result =
+        await response.json();
+
+      if (!response.ok) {
+        console.error(
+          "Error del backend al actualizar perfil:",
+          result
+        );
+
         return false;
       }
 
-      const updatedUsers = users.map(
-        (storedUser) =>
-          storedUser.id === user.id
-            ? {
-                ...storedUser,
-                name: updatedUser.name,
-                email: updatedUser.email,
-                avatar:
-                  updatedUser.avatar,
-              }
-            : storedUser
-      );
+      const updatedUser: User = {
+        ...user,
+
+        name: fullName,
+
+        email: correo,
+      };
 
       await AsyncStorage.setItem(
-        USERS_KEY,
-        JSON.stringify(updatedUsers)
+        SESSION_KEY,
+        JSON.stringify(
+          updatedUser
+        )
       );
 
-      await saveSession(updatedUser);
+      setUser(updatedUser);
 
       return true;
     } catch (error) {
@@ -325,9 +333,7 @@ export function AuthProvider({
 
   async function logout() {
     try {
-      await AsyncStorage.removeItem(
-        SESSION_KEY
-      );
+      await authService.logout();
 
       setUser(null);
     } catch (error) {
@@ -335,18 +341,36 @@ export function AuthProvider({
         "Error al cerrar sesión:",
         error
       );
+
+      setUser(null);
     }
+  }
+
+  async function clearSession() {
+    await AsyncStorage.multiRemove([
+      SESSION_KEY,
+      TOKEN_KEY,
+    ]);
+
+    setUser(null);
   }
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        isAuthenticated: Boolean(user),
+
+        isAuthenticated:
+          Boolean(user),
+
         loading,
+
         login,
+
         register,
+
         updateProfile,
+
         logout,
       }}
     >
@@ -355,8 +379,24 @@ export function AuthProvider({
   );
 }
 
+function buildFullName(
+  nombre?: string,
+  apellidoPaterno?: string,
+  apellidoMaterno?: string
+): string {
+  return [
+    nombre,
+    apellidoPaterno,
+    apellidoMaterno,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+}
+
 export function useAuth() {
-  const context = useContext(AuthContext);
+  const context =
+    useContext(AuthContext);
 
   if (!context) {
     throw new Error(

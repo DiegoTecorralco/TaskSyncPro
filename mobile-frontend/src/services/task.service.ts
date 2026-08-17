@@ -1,75 +1,277 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { Task, User } from "../types";
+import { API_URL } from "../config/api";
+import { Task } from "../types";
 
 const SESSION_KEY = "@tasksync_session";
+const TOKEN_KEY = "@tasksync_token";
 
-async function getCurrentUser(): Promise<User | null> {
-  try {
-    const session = await AsyncStorage.getItem(
-      SESSION_KEY
-    );
+/* ==========================================
+   TIPOS DEL BACKEND
+========================================== */
 
-    if (!session) {
-      return null;
-    }
-
-    return JSON.parse(session) as User;
-  } catch (error) {
-    console.error(
-      "Error al obtener la sesión actual:",
-      error
-    );
-
-    return null;
-  }
+interface BackendUser {
+  usuario_id?: number;
+  id?: number;
+  nombre?: string;
+  apellido_paterno?: string;
+  apellido_materno?: string;
+  correo?: string;
 }
 
-async function getTasksStorageKey(): Promise<string> {
-  const currentUser = await getCurrentUser();
+interface BackendReminder {
+  recordatorio_id: number;
+  usuario_id: number;
+  categoria_id: number | null;
+  titulo: string;
+  descripcion: string | null;
+  fecha: string;
+  notificado: number | boolean;
+}
 
-  if (!currentUser) {
+interface BackendResponse<T> {
+  success: boolean;
+  message: string;
+  data?: T;
+}
+
+/* ==========================================
+   OBTENER USUARIO ACTUAL
+========================================== */
+
+async function getCurrentUser(): Promise<BackendUser> {
+  const session = await AsyncStorage.getItem(
+    SESSION_KEY
+  );
+
+  if (!session) {
     throw new Error(
       "No existe una sesión activa."
     );
   }
 
-  return `@tasksync_tasks_${currentUser.id}`;
+  const user = JSON.parse(
+    session
+  ) as BackendUser;
+
+  return user;
 }
 
-async function saveTasks(
-  tasks: Task[]
-): Promise<void> {
-  const storageKey =
-    await getTasksStorageKey();
+/* ==========================================
+   OBTENER ID DEL USUARIO
+========================================== */
 
-  await AsyncStorage.setItem(
-    storageKey,
-    JSON.stringify(tasks)
+async function getCurrentUserId(): Promise<number> {
+  const user = await getCurrentUser();
+
+  console.log(
+    "Usuario guardado en sesión:",
+    user
+  );
+
+  const userId =
+    user.usuario_id ?? user.id;
+
+  if (
+    userId === undefined ||
+    userId === null
+  ) {
+    throw new Error(
+      "No se encontró el ID del usuario en la sesión."
+    );
+  }
+
+  return Number(userId);
+}
+
+/* ==========================================
+   OBTENER TOKEN
+========================================== */
+
+async function getToken(): Promise<string | null> {
+  return AsyncStorage.getItem(
+    TOKEN_KEY
   );
 }
 
+/* ==========================================
+   HEADERS
+========================================== */
+
+async function getHeaders() {
+  const token = await getToken();
+
+  return {
+    "Content-Type": "application/json",
+
+    ...(token
+      ? {
+          Authorization: `Bearer ${token}`,
+        }
+      : {}),
+  };
+}
+
+/* ==========================================
+   FECHA BACKEND -> FRONTEND
+========================================== */
+
+function parseBackendDate(
+  fecha: string
+) {
+  if (!fecha) {
+    return {
+      dueDate: "",
+      dueTime: "",
+    };
+  }
+
+  const date = new Date(fecha);
+
+  if (Number.isNaN(date.getTime())) {
+    const [datePart, timePart] =
+      fecha.split("T");
+
+    return {
+      dueDate: datePart || "",
+
+      dueTime: timePart
+        ? timePart.substring(0, 5)
+        : "",
+    };
+  }
+
+  const year = date.getFullYear();
+
+  const month = String(
+    date.getMonth() + 1
+  ).padStart(2, "0");
+
+  const day = String(
+    date.getDate()
+  ).padStart(2, "0");
+
+  const hours = String(
+    date.getHours()
+  ).padStart(2, "0");
+
+  const minutes = String(
+    date.getMinutes()
+  ).padStart(2, "0");
+
+  return {
+    dueDate: `${year}-${month}-${day}`,
+    dueTime: `${hours}:${minutes}`,
+  };
+}
+
+/* ==========================================
+   FECHA FRONTEND -> BACKEND
+========================================== */
+
+function buildBackendDate(
+  dueDate?: string,
+  dueTime?: string
+) {
+  const date =
+    dueDate ||
+    new Date()
+      .toISOString()
+      .split("T")[0];
+
+  const time =
+    dueTime || "00:00";
+
+  return `${date}T${time}:00`;
+}
+
+/* ==========================================
+   RECORDATORIO -> TASK
+========================================== */
+
+function reminderToTask(
+  reminder: BackendReminder
+): Task {
+  const {
+    dueDate,
+    dueTime,
+  } = parseBackendDate(
+    reminder.fecha
+  );
+
+  return {
+    id: String(
+      reminder.recordatorio_id
+    ),
+
+    title: reminder.titulo,
+
+    description:
+      reminder.descripcion || "",
+
+    dueDate,
+
+    dueTime,
+
+    completed: false,
+
+    priority: "Media",
+
+    reminderEnabled: true,
+
+    notificationId: undefined,
+  } as Task;
+}
+
+/* ==========================================
+   TASK SERVICE
+========================================== */
+
 export const taskService = {
+
+  /* ========================================
+     OBTENER TAREAS
+  ======================================== */
+
   async getTasks(): Promise<Task[]> {
     try {
-      const storageKey =
-        await getTasksStorageKey();
+      const userId =
+        await getCurrentUserId();
 
-      const data =
-        await AsyncStorage.getItem(
-          storageKey
+      const headers =
+        await getHeaders();
+
+      console.log(
+        "Solicitando tareas del usuario:",
+        userId
+      );
+
+      const response = await fetch(
+        `${API_URL}/reminders/user/${userId}`,
+        {
+          method: "GET",
+          headers,
+        }
+      );
+
+      const result: BackendResponse<
+        BackendReminder[]
+      > = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message ||
+            "No se pudieron obtener las tareas."
         );
-
-      if (!data) {
-        await AsyncStorage.setItem(
-          storageKey,
-          JSON.stringify([])
-        );
-
-        return [];
       }
 
-      return JSON.parse(data) as Task[];
+      const reminders =
+        result.data || [];
+
+      return reminders.map(
+        reminderToTask
+      );
+
     } catch (error) {
       console.error(
         "Error al obtener tareas:",
@@ -80,33 +282,87 @@ export const taskService = {
     }
   },
 
+  /* ========================================
+     CREAR TAREA
+  ======================================== */
+
   async createTask(
     task: Omit<Task, "id">
   ): Promise<Task> {
-    const tasks = await this.getTasks();
 
-    const newTask: Task = {
-      id: Date.now().toString(),
+    const userId =
+      await getCurrentUserId();
+
+    const headers =
+      await getHeaders();
+
+    const fecha =
+      buildBackendDate(
+        task.dueDate,
+        task.dueTime
+      );
+
+    const response = await fetch(
+      `${API_URL}/reminders`,
+      {
+        method: "POST",
+
+        headers,
+
+        body: JSON.stringify({
+          usuario_id: userId,
+
+          categoria_id: null,
+
+          titulo: task.title,
+
+          descripcion:
+            task.description || null,
+
+          fecha,
+        }),
+      }
+    );
+
+    const result: BackendResponse<{
+      recordatorio_id: number;
+    }> = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.message ||
+          "No se pudo crear la tarea."
+      );
+    }
+
+    if (!result.data) {
+      throw new Error(
+        "El servidor no devolvió el ID de la tarea."
+      );
+    }
+
+    return {
       ...task,
+
+      id: String(
+        result.data.recordatorio_id
+      ),
+
       notificationId: undefined,
-    };
-
-    tasks.unshift(newTask);
-
-    await saveTasks(tasks);
-
-    return newTask;
+    } as Task;
   },
+
+  /* ========================================
+     ACTUALIZAR TAREA
+  ======================================== */
 
   async updateTask(
     id: string,
     updatedFields: Partial<Task>
   ): Promise<Task | undefined> {
-    const tasks = await this.getTasks();
 
-    const currentTask = tasks.find(
-      (task) => task.id === id
-    );
+    const currentTask =
+      await this.getTaskById(id);
 
     if (!currentTask) {
       return undefined;
@@ -118,55 +374,159 @@ export const taskService = {
       id: currentTask.id,
     };
 
-    const updatedTasks = tasks.map(
-      (task) =>
-        task.id === id
-          ? updatedTask
-          : task
+    const headers =
+      await getHeaders();
+
+    const fecha =
+      buildBackendDate(
+        updatedTask.dueDate,
+        updatedTask.dueTime
+      );
+
+    const response = await fetch(
+      `${API_URL}/reminders/${id}`,
+      {
+        method: "PUT",
+
+        headers,
+
+        body: JSON.stringify({
+          categoria_id: null,
+
+          titulo:
+            updatedTask.title,
+
+          descripcion:
+            updatedTask.description ||
+            null,
+
+          fecha,
+
+          notificado: false,
+        }),
+      }
     );
 
-    await saveTasks(updatedTasks);
+    const result: BackendResponse<null> =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.message ||
+          "No se pudo actualizar la tarea."
+      );
+    }
 
     return updatedTask;
   },
 
+  /* ========================================
+     ELIMINAR TAREA
+  ======================================== */
+
   async deleteTask(
     id: string
   ): Promise<void> {
-    const tasks = await this.getTasks();
 
-    const updatedTasks = tasks.filter(
-      (task) => task.id !== id
+    const headers =
+      await getHeaders();
+
+    const response = await fetch(
+      `${API_URL}/reminders/${id}`,
+      {
+        method: "DELETE",
+        headers,
+      }
     );
 
-    await saveTasks(updatedTasks);
+    const result: BackendResponse<null> =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.message ||
+          "No se pudo eliminar la tarea."
+      );
+    }
   },
+
+  /* ========================================
+     OBTENER TAREA POR ID
+  ======================================== */
 
   async getTaskById(
     id: string
   ): Promise<Task | undefined> {
-    const tasks = await this.getTasks();
 
-    return tasks.find(
-      (task) => task.id === id
-    );
+    try {
+      const headers =
+        await getHeaders();
+
+      const response = await fetch(
+        `${API_URL}/reminders/${id}`,
+        {
+          method: "GET",
+          headers,
+        }
+      );
+
+      if (response.status === 404) {
+        return undefined;
+      }
+
+      const result: BackendResponse<
+        BackendReminder
+      > = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message ||
+            "No se pudo obtener la tarea."
+        );
+      }
+
+      if (!result.data) {
+        return undefined;
+      }
+
+      return reminderToTask(
+        result.data
+      );
+
+    } catch (error) {
+      console.error(
+        "Error al obtener tarea:",
+        error
+      );
+
+      return undefined;
+    }
   },
 
+  /* ========================================
+     DASHBOARD
+  ======================================== */
+
   async getDashboard() {
-    const tasks = await this.getTasks();
+    const tasks =
+      await this.getTasks();
 
     return {
-      totalTasks: tasks.length,
+      totalTasks:
+        tasks.length,
 
-      completedTasks: tasks.filter(
-        (task) => task.completed
-      ).length,
+      completedTasks:
+        tasks.filter(
+          (task) => task.completed
+        ).length,
 
-      pendingTasks: tasks.filter(
-        (task) => !task.completed
-      ).length,
+      pendingTasks:
+        tasks.filter(
+          (task) => !task.completed
+        ).length,
 
-      recentTasks: tasks.slice(0, 5),
+      recentTasks:
+        tasks.slice(0, 5),
     };
   },
 };

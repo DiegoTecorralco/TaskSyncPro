@@ -1,72 +1,238 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { API_URL } from "../config/api";
 import { Category } from "../types";
 
-const STORAGE_KEY = "@categories";
+const TOKEN_KEY = "@tasksync_token";
+
+interface BackendCategory {
+  categoria_id: number;
+  nombre: string;
+}
+
+interface BackendResponse<T> {
+  success: boolean;
+  message: string;
+  data?: T;
+}
+
+async function getToken(): Promise<string | null> {
+  return AsyncStorage.getItem(TOKEN_KEY);
+}
+
+async function getHeaders() {
+  const token = await getToken();
+
+  return {
+    "Content-Type": "application/json",
+    ...(token
+      ? {
+          Authorization: `Bearer ${token}`,
+        }
+      : {}),
+  };
+}
+
+function backendCategoryToCategory(
+  category: BackendCategory
+): Category {
+  return {
+    id: String(category.categoria_id),
+    name: category.nombre,
+    color: "#4F46E5",
+  };
+}
 
 export const categoryService = {
   async getCategories(): Promise<Category[]> {
-    const data = await AsyncStorage.getItem(STORAGE_KEY);
+    try {
+      const headers = await getHeaders();
 
-    if (!data) {
-      const defaults: Category[] = [
+      const response = await fetch(
+        `${API_URL}/categories`,
         {
-          id: "1",
-          name: "Trabajo",
-          color: "#4F46E5",
-        },
-        {
-          id: "2",
-          name: "Escuela",
-          color: "#22C55E",
-        },
-        {
-          id: "3",
-          name: "Personal",
-          color: "#F97316",
-        },
-      ];
-
-      await AsyncStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(defaults)
+          method: "GET",
+          headers,
+        }
       );
 
-      return defaults;
+      const result: BackendResponse<
+        BackendCategory[]
+      > = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message ||
+            "No se pudieron obtener las categorías."
+        );
+      }
+
+      const categories = result.data || [];
+
+      return categories.map(
+        backendCategoryToCategory
+      );
+    } catch (error) {
+      console.error(
+        "Error al obtener categorías:",
+        error
+      );
+
+      return [];
+    }
+  },
+
+  async createCategory(
+    category: Omit<Category, "id">
+  ): Promise<Category> {
+    const headers = await getHeaders();
+
+    const response = await fetch(
+      `${API_URL}/categories`,
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          nombre: category.name,
+        }),
+      }
+    );
+
+    const result: BackendResponse<{
+      categoria_id: number;
+    }> = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.message ||
+          "No se pudo crear la categoría."
+      );
     }
 
-    return JSON.parse(data);
+    if (!result.data) {
+      throw new Error(
+        "El servidor no devolvió el ID de la categoría."
+      );
+    }
+
+    return {
+      ...category,
+      id: String(result.data.categoria_id),
+    };
   },
 
-  async createCategory(category: Omit<Category, "id">) {
-    const categories = await this.getCategories();
+  async updateCategory(
+    id: string,
+    category: Partial<Category>
+  ): Promise<Category | undefined> {
+    const current =
+      await this.getCategoryById(id);
 
-    const newCategory: Category = {
-      id: Date.now().toString(),
+    if (!current) {
+      return undefined;
+    }
+
+    const updatedCategory: Category = {
+      ...current,
       ...category,
+      id: current.id,
     };
 
-    categories.push(newCategory);
+    const headers = await getHeaders();
 
-    await AsyncStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(categories)
+    const response = await fetch(
+      `${API_URL}/categories/${id}`,
+      {
+        method: "PUT",
+        headers,
+        body: JSON.stringify({
+          nombre: updatedCategory.name,
+        }),
+      }
     );
 
-    return newCategory;
+    const result: BackendResponse<null> =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.message ||
+          "No se pudo actualizar la categoría."
+      );
+    }
+
+    return updatedCategory;
   },
 
-  async deleteCategory(id: string) {
-    const categories = await this.getCategories();
+  async deleteCategory(
+    id: string
+  ): Promise<boolean> {
+    const headers = await getHeaders();
 
-    const updated = categories.filter(
-      (c) => c.id !== id
+    const response = await fetch(
+      `${API_URL}/categories/${id}`,
+      {
+        method: "DELETE",
+        headers,
+      }
     );
 
-    await AsyncStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(updated)
-    );
+    const result: BackendResponse<null> =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.message ||
+          "No se pudo eliminar la categoría."
+      );
+    }
 
     return true;
+  },
+
+  async getCategoryById(
+    id: string
+  ): Promise<Category | undefined> {
+    try {
+      const headers = await getHeaders();
+
+      const response = await fetch(
+        `${API_URL}/categories/${id}`,
+        {
+          method: "GET",
+          headers,
+        }
+      );
+
+      if (response.status === 404) {
+        return undefined;
+      }
+
+      const result: BackendResponse<
+        BackendCategory
+      > = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message ||
+            "No se pudo obtener la categoría."
+        );
+      }
+
+      if (!result.data) {
+        return undefined;
+      }
+
+      return backendCategoryToCategory(
+        result.data
+      );
+    } catch (error) {
+      console.error(
+        "Error al obtener categoría:",
+        error
+      );
+
+      return undefined;
+    }
   },
 };
