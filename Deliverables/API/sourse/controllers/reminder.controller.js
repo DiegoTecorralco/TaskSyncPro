@@ -7,6 +7,7 @@ import {
     deleteReminder,
     markAsNotified
 } from "../DAO/reminder.dao.js";
+import { io } from "../config/socket.js";
 
 /* ==========================================
    OBTENER TODOS LOS RECORDATORIOS
