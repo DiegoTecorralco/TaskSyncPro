@@ -5,8 +5,6 @@ import morgan from "morgan";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import pool from "./config/database.js";
-
-// Importar Socket.io
 import { initSocket } from "./config/socket.js";
 
 // Rutas
@@ -17,6 +15,7 @@ import categoryRoutes from "./routes/category.routes.js";
 import reminderRoutes from "./routes/reminder.routes.js";
 import recurrenceRoutes from "./routes/recurrence.routes.js";
 import socketTestRoutes from "./routes/socket.test.routes.js";
+import mlRoutes from "./routes/ml.routes.js";
 
 const app = express();
 
@@ -53,6 +52,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/reminders", reminderRoutes);
 app.use("/api/recurrences", recurrenceRoutes);
 app.use("/api/socket-test", socketTestRoutes);
+app.use("/api/ml", mlRoutes);
 
 /* ============================
      RUTA NO ENCONTRADA
@@ -91,13 +91,13 @@ const { server, io } = initSocket(app);
 
     try {
         const [rows] = await pool.query('SELECT 1');
-        console.log('✅ Conexión a la base de datos: OK');
+        console.log('Conexión a la base de datos: OK');
     } catch (error) {
-        console.error('❌ Error de conexión a la BD:', error.message);
+        console.error('Error de conexión a la BD:', error.message);
     }
 
     server.listen(PORT, () => {
-        console.log(`✅ Servidor HTTP + Socket.io: http://localhost:${PORT}`);
+        console.log(`Servidor HTTP + Socket.io: http://localhost:${PORT}`);
         console.log('═══════════════════════════════════════');
     });
 })();
