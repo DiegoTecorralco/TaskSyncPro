@@ -5,6 +5,7 @@ plugins {
 
 android {
     namespace = "com.tasksyncpro.wearos"
+
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -17,7 +18,6 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
     }
 
     buildTypes {
@@ -27,11 +27,14 @@ android {
             }
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     useLibrary("wear-sdk")
+
     buildFeatures {
         compose = true
     }
@@ -39,6 +42,7 @@ android {
 
 dependencies {
     implementation(platform(libs.compose.bom))
+
     implementation(libs.activity.compose)
     implementation(libs.compose.foundation)
     implementation(libs.compose.material3)
@@ -49,12 +53,20 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.wear.tooling.preview)
+
     implementation("androidx.wear.compose:compose-material:1.3.1")
     implementation("androidx.wear.compose:compose-foundation:1.3.1")
     implementation("androidx.wear.compose:compose-navigation:1.3.1")
     implementation("androidx.compose.material:material-icons-extended")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0")
+
+    implementation("com.squareup.retrofit2:retrofit:2.12.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.12.0")
+
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
+
     debugImplementation(libs.ui.test.manifest)
     debugImplementation(libs.ui.tooling)
 }

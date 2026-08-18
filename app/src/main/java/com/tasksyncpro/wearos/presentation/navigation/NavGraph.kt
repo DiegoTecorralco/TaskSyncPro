@@ -39,22 +39,16 @@ fun TaskSyncProNavGraph(
 ) {
 
     var currentScreen by rememberSaveable {
-
         mutableStateOf(
             AppScreen.DASHBOARD.name
         )
     }
 
-    /*
-     * Guarda qué tarea se seleccionó.
-     */
     var selectedTaskId by rememberSaveable {
-
         mutableStateOf("")
     }
 
     fun goHome() {
-
         currentScreen =
             AppScreen.DASHBOARD.name
     }
@@ -63,54 +57,38 @@ fun TaskSyncProNavGraph(
 
         currentScreen =
             when (
-                AppScreen.valueOf(
-                    currentScreen
-                )
+                AppScreen.valueOf(currentScreen)
             ) {
 
                 AppScreen.DASHBOARD ->
                     AppScreen.DASHBOARD.name
 
-
                 AppScreen.TAREAS_MENU ->
                     AppScreen.DASHBOARD.name
-
 
                 AppScreen.LISTA_TAREAS ->
                     AppScreen.TAREAS_MENU.name
 
-
                 AppScreen.PENDIENTES ->
                     AppScreen.TAREAS_MENU.name
-
 
                 AppScreen.TERMINADAS ->
                     AppScreen.TAREAS_MENU.name
 
-
                 AppScreen.PRIORIDADES ->
                     AppScreen.DASHBOARD.name
-
 
                 AppScreen.CALENDARIO ->
                     AppScreen.DASHBOARD.name
 
-
                 AppScreen.NOTIFICACION ->
                     AppScreen.DASHBOARD.name
 
-
-                /*
-                 * Desde una tarea seleccionada
-                 * regresamos al calendario.
-                 */
                 AppScreen.TASK_DETAIL ->
                     AppScreen.CALENDARIO.name
 
-
                 AppScreen.RESULT_COMPLETED ->
                     AppScreen.LISTA_TAREAS.name
-
 
                 AppScreen.RESULT_DELETED ->
                     AppScreen.LISTA_TAREAS.name
@@ -118,39 +96,38 @@ fun TaskSyncProNavGraph(
     }
 
     when (
-        AppScreen.valueOf(
-            currentScreen
-        )
+        AppScreen.valueOf(currentScreen)
     ) {
 
-        // ============================
+        // =========================================
         // DASHBOARD
-        // ============================
+        // =========================================
 
         AppScreen.DASHBOARD -> {
 
             OptionsScreen(
 
-                onTareas = {
+                // IMPORTANTE:
+                // ahora el dashboard recibe el ViewModel
+                // para mostrar el estado del backend.
+                viewModel = viewModel,
 
+                onTareas = {
                     currentScreen =
                         AppScreen.TAREAS_MENU.name
                 },
 
                 onCalendario = {
-
                     currentScreen =
                         AppScreen.CALENDARIO.name
                 },
 
                 onNotificacion = {
-
                     currentScreen =
                         AppScreen.NOTIFICACION.name
                 },
 
                 onPrioridades = {
-
                     currentScreen =
                         AppScreen.PRIORIDADES.name
                 },
@@ -166,28 +143,25 @@ fun TaskSyncProNavGraph(
         }
 
 
-        // ============================
-        // MENÚ TAREAS
-        // ============================
+        // =========================================
+        // MENÚ DE TAREAS
+        // =========================================
 
         AppScreen.TAREAS_MENU -> {
 
             TareasMenuScreen(
 
                 onListaTareas = {
-
                     currentScreen =
                         AppScreen.LISTA_TAREAS.name
                 },
 
                 onPendientes = {
-
                     currentScreen =
                         AppScreen.PENDIENTES.name
                 },
 
                 onTerminadas = {
-
                     currentScreen =
                         AppScreen.TERMINADAS.name
                 },
@@ -203,9 +177,9 @@ fun TaskSyncProNavGraph(
         }
 
 
-        // ============================
+        // =========================================
         // LISTA DE TAREAS
-        // ============================
+        // =========================================
 
         AppScreen.LISTA_TAREAS -> {
 
@@ -217,9 +191,7 @@ fun TaskSyncProNavGraph(
 
                     currentScreen =
 
-                        if (
-                            result == "completed"
-                        ) {
+                        if (result == "completed") {
 
                             AppScreen
                                 .RESULT_COMPLETED
@@ -244,9 +216,9 @@ fun TaskSyncProNavGraph(
         }
 
 
-        // ============================
+        // =========================================
         // PENDIENTES
-        // ============================
+        // =========================================
 
         AppScreen.PENDIENTES -> {
 
@@ -265,9 +237,9 @@ fun TaskSyncProNavGraph(
         }
 
 
-        // ============================
+        // =========================================
         // TERMINADAS
-        // ============================
+        // =========================================
 
         AppScreen.TERMINADAS -> {
 
@@ -286,9 +258,9 @@ fun TaskSyncProNavGraph(
         }
 
 
-        // ============================
+        // =========================================
         // PRIORIDADES
-        // ============================
+        // =========================================
 
         AppScreen.PRIORIDADES -> {
 
@@ -307,9 +279,9 @@ fun TaskSyncProNavGraph(
         }
 
 
-        // ============================
+        // =========================================
         // CALENDARIO
-        // ============================
+        // =========================================
 
         AppScreen.CALENDARIO -> {
 
@@ -317,10 +289,6 @@ fun TaskSyncProNavGraph(
 
                 viewModel = viewModel,
 
-                /*
-                 * Recibimos el ID de la tarea
-                 * que se tocó en el calendario.
-                 */
                 onTaskSelected = { taskId ->
 
                     selectedTaskId =
@@ -341,9 +309,9 @@ fun TaskSyncProNavGraph(
         }
 
 
-        // ============================
+        // =========================================
         // DETALLE DE TAREA
-        // ============================
+        // =========================================
 
         AppScreen.TASK_DETAIL -> {
 
@@ -355,10 +323,6 @@ fun TaskSyncProNavGraph(
                 viewModel =
                     viewModel,
 
-                /*
-                 * Si eliminamos la tarea,
-                 * regresamos al calendario.
-                 */
                 onDeleted = {
 
                     currentScreen =
@@ -376,9 +340,9 @@ fun TaskSyncProNavGraph(
         }
 
 
-        // ============================
-        // NOTIFICACIONES
-        // ============================
+        // =========================================
+        // AVISOS / NOTIFICACIONES
+        // =========================================
 
         AppScreen.NOTIFICACION -> {
 
@@ -397,9 +361,9 @@ fun TaskSyncProNavGraph(
         }
 
 
-        // ============================
-        // RESULTADO COMPLETADA
-        // ============================
+        // =========================================
+        // RESULTADO: COMPLETADA
+        // =========================================
 
         AppScreen.RESULT_COMPLETED -> {
 
@@ -419,9 +383,9 @@ fun TaskSyncProNavGraph(
         }
 
 
-        // ============================
-        // RESULTADO ELIMINADA
-        // ============================
+        // =========================================
+        // RESULTADO: ELIMINADA
+        // =========================================
 
         AppScreen.RESULT_DELETED -> {
 
