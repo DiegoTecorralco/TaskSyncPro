@@ -10,6 +10,7 @@ import com.tasksyncpro.wearos.presentation.ui.screens.*
 
 private enum class AppScreen {
 
+    // Dashboard principal del smartwatch
     DASHBOARD,
 
     TAREAS_MENU,
