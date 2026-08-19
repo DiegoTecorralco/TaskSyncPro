@@ -27,6 +27,9 @@ interface BackendReminder {
   descripcion: string | null;
   fecha: string;
   notificado: number | boolean;
+
+  // NUEVO: estado de la tarea
+  completado: number | boolean;
 }
 
 interface BackendResponse<T> {
@@ -186,6 +189,19 @@ function buildBackendDate(
 }
 
 /* ==========================================
+   CONVERTIR ESTADO BACKEND -> FRONTEND
+========================================== */
+
+function parseCompleted(
+  completado: number | boolean | undefined
+): boolean {
+  return (
+    completado === true ||
+    completado === 1
+  );
+}
+
+/* ==========================================
    RECORDATORIO -> TASK
 ========================================== */
 
@@ -213,7 +229,10 @@ function reminderToTask(
 
     dueTime,
 
-    completed: false,
+    // AHORA VIENE DESDE MYSQL
+    completed: parseCompleted(
+      reminder.completado
+    ),
 
     priority: "Media",
 
@@ -320,6 +339,11 @@ export const taskService = {
             task.description || null,
 
           fecha,
+
+          // NUEVO
+          completado: task.completed
+            ? 1
+            : 0,
         }),
       }
     );
@@ -383,6 +407,13 @@ export const taskService = {
         updatedTask.dueTime
       );
 
+    console.log(
+      "Actualizando tarea:",
+      id,
+      "completada:",
+      updatedTask.completed
+    );
+
     const response = await fetch(
       `${API_URL}/reminders/${id}`,
       {
@@ -403,6 +434,12 @@ export const taskService = {
           fecha,
 
           notificado: false,
+
+          // IMPORTANTE
+          completado:
+            updatedTask.completed
+              ? 1
+              : 0,
         }),
       }
     );
