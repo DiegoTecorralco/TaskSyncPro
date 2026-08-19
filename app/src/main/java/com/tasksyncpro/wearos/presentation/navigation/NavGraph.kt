@@ -145,7 +145,7 @@ fun TaskSyncProNavGraph(
 
 
         // =========================================
-        // MENÚ DE TAREAS
+        // MENÚ DE TAREAS (LISTAS)
         // =========================================
 
         AppScreen.TAREAS_MENU -> {
