@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # Servicio de la base de datos MySQL
+  db:
+    image: mysql:8.0
+    container_name: tasksync_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234                # Coincide con tu .env
+      MYSQL_DATABASE: tasksyncpro              # Coincide con tu .env
+      MYSQL_USER: root                         # Opcional, pero recomendado
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "3307:3306"                            # Tu puerto 3307 mapeado al 3306 interno
+    volumes:
+      - db_data:/var/lib/mysql                 # Persistencia de datos
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
+
+  # Servicio de la API TaskSync Pro
+  api:
+    build: .
+    container_name: tasksync_api
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - DB_HOST=db                             # Nombre del servicio, no "localhost"
+      - DB_PORT=3306                           # Puerto interno de MySQL en el contenedor
+      - DB_USER=root
+      - DB_PASSWORD=1234
+      - DB_NAME=tasksyncpro
+      - JWT_SECRET=TaskSyncProSecretKey
+      - JWT_EXPIRES_IN=7d
+    volumes:
+      - ./Deliverables/API/sourse:/app         # Monta el código para desarrollo (opcional)
+      - /app/node_modules                      # Evita sobrescribir node_modules
+    command: npm run dev                       # Usa "npm start" para producción
+
+volumes:
+  db_data:
