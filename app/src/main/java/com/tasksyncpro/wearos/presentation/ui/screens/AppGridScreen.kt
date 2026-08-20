@@ -79,7 +79,7 @@ fun AppGridScreen(onOpenOptions: () -> Unit) {
         }
     }
 }
-
+// apartado de pendinetes
 @Composable
 private fun GridIcon(icon: androidx.compose.ui.graphics.vector.ImageVector, bg: Color) {
     Box(
