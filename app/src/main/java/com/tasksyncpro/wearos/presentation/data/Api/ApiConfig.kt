@@ -1,6 +1,7 @@
 
 package com.tasksyncpro.wearos.presentation.data.api
 
+// configuracion de la api
 object ApiConfig {
 
     /*
