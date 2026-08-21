@@ -85,6 +85,50 @@ La sesión del usuario se almacena con AsyncStorage.
 
 Esto permite que, al cerrar y volver a abrir la aplicación, el usuario permanezca autenticado sin tener que introducir nuevamente sus datos.
 Permite que el Usuario pueda seguir visualizando sus Tareas sin que estas se pierdan al momento de cerrar la sesion o eliminar la aplicacion 
+
+
+¡Perfecto! Te dejo la sección de **Próximas Actualizaciones** optimizada para tu README, con tablas claras y formato limpio:
+
+---
+
+## 🔮 Próximas Actualizaciones
+
+A continuación se detallan las funcionalidades planificadas para futuras versiones de TaskSync Pro:
+
+### 🚀 Alta Prioridad
+
+| Funcionalidad | Descripción | Estado | Versión |
+|---------------|-------------|--------|---------|
+| **Confirmación de correo** | Envío de correo de verificación al registrar una cuenta nueva | 📋 Planificación | v1.1.0 |
+| **Foto de perfil** | Seleccionar foto desde galería o tomar con cámara | 📋 Planificación | v1.1.0 |
+| **Notificaciones push** | Recordatorios automáticos para tareas próximas a vencer | 📋 Planificación | v1.2.0 |
+| **Modo oscuro** | Tema oscuro para mejorar experiencia visual en poca luz | 📋 Planificación | v1.2.0 |
+
+---
+
+### ⚡ Media Prioridad
+
+| Funcionalidad | Descripción | Estado | Versión |
+|---------------|-------------|--------|---------|
+| **Sincronización en la nube** | Respaldo y sincronización entre múltiples dispositivos | 📋 Evaluación | v2.0.0 |
+| **Archivos adjuntos** | Adjuntar imágenes, documentos o archivos a las tareas | 📋 Evaluación | v1.3.0 |
+| **Subtareas** | Dividir tareas grandes en subtareas más pequeñas | 📋 Evaluación | v1.3.0 |
+| **Etiquetas personalizadas** | Añadir etiquetas de colores para mejor organización visual | 📋 Evaluación | v1.3.0 |
+
+---
+
+### 🌟 Baja Prioridad
+
+| Funcionalidad | Descripción | Estado | Versión |
+|---------------|-------------|--------|---------|
+| **Compartir tareas** | Compartir tareas y listas con otros usuarios | 📋 Evaluación | v2.1.0 |
+| **Exportación de datos** | Exportar tareas y estadísticas en PDF, CSV o Excel | 📋 Evaluación | v2.1.0 |
+| **Modo colaborativo** | Crear equipos y asignar tareas a múltiples usuarios | 📋 Evaluación | v3.0.0 |
+| **Integración con calendarios externos** | Sincronizar con Google Calendar, Outlook u otros servicios | 📋 Evaluación | v3.0.0 |
+| **Asistente por voz** | Crear y gestionar tareas mediante comandos de voz | 📋 Evaluación | v3.1.0 |
+
+---
+
 # 👥 Equipo de Desarrollo
 
 El desarrollo de **TaskSync Pro** fue realizado de manera colaborativa por los siguientes integrantes:
