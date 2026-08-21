@@ -20,6 +20,8 @@
 14. [Gestión de Riesgos](#14-gestión-de-riesgos)
 15. [Plan de Pruebas](#15-plan-de-pruebas)
 16. [Información del Cierre del Proyecto](#16-información-del-cierre-del-proyecto)
+17. [Resultados Finales](#17-resultados-finales)
+18. [Presentación del Proyecto](#18-presentacion-del-proyecto)
 
 
 
@@ -377,6 +379,12 @@ El cronograma contempla actividades relacionadas con el análisis, diseño, desa
 | Frontend Wearable | Optimización                  | 27/07/2026 - 09/08/2026 |
 | Frontend Wearable | Pruebas y correcciones        | 10/08/2026 - 17/08/2026 |
 
+
+**Diagrama de Gantt:**
+
+* ![Diagrama de Gantt ](images/Gantt_TaskSyncPro.png)
+
+
 **Diagrama de Gantt en Excel:**
 
 * [Diagrama de Gantt en Excel](images/Gantt_TaskSyncPro.xlsx)
@@ -384,6 +392,8 @@ El cronograma contempla actividades relacionadas con el análisis, diseño, desa
 **Datos del Gantt en CSV:**
 
 * [Datos del Gantt en CSV](images/Gantt_TaskSyncPro.csv)
+
+
 
 ## 10. Gestión de Costos
 
@@ -670,3 +680,34 @@ La documentación del proyecto contempla la gestión del alcance, recursos human
 
 El proyecto se encuentra orientado a cumplir con los objetivos establecidos y mantener una documentación organizada que permita dar seguimiento al desarrollo y a los resultados obtenidos.
 
+## 17. Resultados Finales
+
+**API Funcional**
+
+aqui esta una captura de nuestra API Funcional, con logs de Morgan
+
+![API](./images/api1.png)
+
+**Ejemplo de api con Socket.io implementado**
+
+aquí esta una captura de pantalla de la prueba sencilla que hice para ver si la api aceptaba el Socket.io
+
+![Socket.io](./images/Socket.io.png)
+
+**Estructura de la API** 
+
+Aqui se encuentra una captura de de toda la estructura de la API
+
+![Estructura](./images/estructura.png)
+
+**Pruebas en postman del proyecto**
+
+Aqui esta una captura donde se muestra una peticion exitosa y del lado izquierdo todas las rutas donde hice las pruebas
+
+![pruebas](./images/pruebas.png)
+
+## 18. Presentacion del Proyecto
+
+Aquí se encuentra nuestra presentación que presentamos para exponer
+
+[Presentación en PowerPoint de TaskSyncPro](./images/TaskSyncPro_Presentacion_9B.pptx)
