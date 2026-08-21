@@ -1,0 +1,31 @@
+# Ignorar dependencias de Node.js
+node_modules/
+npm-debug.log
+package-lock.json
+
+# Ignorar entorno virtual de Python
+ml_engine/venv/
+
+# Ignorar archivos de control de versiones
+.git/
+.gitignore
+
+# Ignorar archivos de entorno y temporales
+.env
+.env.example
+*.log
+*.tmp
+*.temp
+.DS_Store
+
+# Ignorar archivos de IDE
+.vscode/
+.idea/
+
+# Ignorar la base de datos de MySQL (si usas volumen mapeado)
+db_data/
+
+# Ignorar archivos grandes o binarios
+*.pkl
+*.pyc
+__pycache__/

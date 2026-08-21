@@ -32,10 +32,10 @@ async function runMigration() {
             Sequelize
         );
 
-        console.log("✅ Migración ejecutada correctamente");
+        console.log("Migración ejecutada correctamente");
 
     } catch (error) {
-        console.error("❌ Error ejecutando migración:");
+        console.error("Error ejecutando migración:");
         console.error(error);
     } finally {
         await sequelize.close();
