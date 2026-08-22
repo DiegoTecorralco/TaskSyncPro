@@ -682,32 +682,69 @@ El proyecto se encuentra orientado a cumplir con los objetivos establecidos y ma
 
 ## 17. Resultados Finales
 
-**API Funcional**
+### 17.1 API
 
-aqui esta una captura de nuestra API Funcional, con logs de Morgan
+**API Funcional**
+aqui esta una captura de nuestra API Funcional, con logs de Morgan.
 
 ![API](./images/api1.png)
 
 **Ejemplo de api con Socket.io implementado**
-
-aquí esta una captura de pantalla de la prueba sencilla que hice para ver si la api aceptaba el Socket.io
+aquí esta una captura de pantalla de la prueba sencilla que hice para ver si la api aceptaba el Socket.io.
 
 ![Socket.io](./images/Socket.io.png)
 
 **Estructura de la API** 
-
-Aqui se encuentra una captura de de toda la estructura de la API
+Aqui se encuentra una captura de de toda la estructura de la API.
 
 ![Estructura](./images/estructura.png)
 
 **Pruebas en postman del proyecto**
-
-Aqui esta una captura donde se muestra una peticion exitosa y del lado izquierdo todas las rutas donde hice las pruebas
+Aqui esta una captura donde se muestra una peticion exitosa y del lado izquierdo todas las rutas donde hice las pruebas.
 
 ![pruebas](./images/pruebas.png)
 
+### 17.2 Werable
+
+**Dashboard**
+Aqui está una captura de pantalla del Dashboard de mi Werable.
+
+![Dashboard Werable](./images/Avisos_Werable.jpeg)
+
+**Tareas**
+Aquí está una captura de la sección de tareas en la app werable.
+
+![Tareas Werable](./images/tareas__Werable.jpeg)
+
+**Avisos Werable**
+Una captura de el apartado de avisos.
+
+![Avisos Werable](./images/Avisos_Werable.jpeg)
+
+**Calendario Werable**
+Aquí esta el apartado del calendario en el Werable.
+
+![Calendario Werable](./images/calendario_Werable.jpeg)
+
+### 17.3 Aplicación móvil
+
+**Dashboard Móvil**
+Captura de pantalla de el Dashboard Móvil.
+
+![Dashboard Móvil](./images/Dashboad_Movil.jpeg)
+
+**Tareas Móvil**
+Captura de pantalla de el apartado de tareas en móvil.
+
+![Tareas Móvil](./images/tareas_Movil.jpeg)
+
+**Creación de nueva tarea Móvil**
+Captura de pantalla de el apartado donde se crea una nueva tarea en el celular.
+
+![Nueva Tarea Móvil](./images/NuevaTarea_Movil.jpeg)
+
 ## 18. Presentacion del Proyecto
 
-Aquí se encuentra nuestra presentación que presentamos para exponer
+Aquí se encuentra nuestra presentación que presentamos para exponer nuestro proyecto.
 
 [Presentación en PowerPoint de TaskSyncPro](./images/TaskSyncPro_Presentacion_9B.pptx)
